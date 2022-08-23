@@ -22,9 +22,7 @@ public class Main {
        wall.drawMap(terminal);
 
        //MONSTER
-        Monster monster= new Monster(5, 5, 'X');
-        terminal.setCursorPosition(monster.getMx(), monster.getMy());
-        terminal.putCharacter(monster.getMonsterSymbol());
+        Monster monster = createMonster(terminal);
 
         //PLAYER
         Player player = createPlayer(terminal);
@@ -33,7 +31,6 @@ public class Main {
 
 
         while (continueReadingInput){
-            //keyStroke= getKeyStroke(terminal);
 
             int index = 0;
             do {
@@ -59,8 +56,6 @@ public class Main {
             terminal.flush();
         }
     }
-
-
 
     private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -95,11 +90,7 @@ public class Main {
         terminal.flush();
 
     }
-    public static void handlePlayer(){
-        //ev att man refererar direct till Player klassen ?
-    }
 
-    //create players --> after merging Player class
     public static Player createPlayer(Terminal terminal) throws Exception {
         Player player = new Player();
         player.setX(10);
@@ -112,12 +103,13 @@ public class Main {
         return player;
     }
 
-    //create monsters --> after merging Monster Class
-    /*public static Monster createMonster(){
+    public static Monster createMonster(Terminal terminal) throws Exception {
+        Monster monster= new Monster(5, 5, 'X');
+        terminal.setCursorPosition(monster.getMx(), monster.getMy());
+        terminal.putCharacter(monster.getMonsterSymbol());
 
-    }*/
-
-
+        return monster;
+    }
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
