@@ -9,29 +9,28 @@ import java.util.List;
 
 
 public class Main {
-    static List<Position> wall1 = new ArrayList<>();
-    static List<Position> wall2 = new ArrayList<>();
-    static List<Position> wall3 = new ArrayList<>();
-    static List<Position> wall4 = new ArrayList<>();
+
     public static void main(String[] args) throws Exception {
         //start-deklaration
         boolean continueReadingInput= true;
         KeyStroke keyStroke= null;
         KeyStroke latestKeyStroke= null;
+        Terminal terminal= createTerminal();
 
-       Terminal terminal= createTerminal();
-       Wall wall= new Wall(50, 50, wall1, wall2, wall3, wall4);
+        //WALL
+       Wall wall= new Wall(100, 50);
        wall.drawMap(terminal);
 
-      Player player = new Player();
+       //MONSTER
+        Monster monster= new Monster(5, 5, 'X');
+        terminal.setCursorPosition(monster.getMx(), monster.getMy());
+        terminal.putCharacter(monster.getMonsterSymbol());
 
-      player.setX(10);
-      player.setY(15);
-      player.setSymbol('\u263A');
+        //PLAYER
+        Player player = createPlayer(terminal);
 
-       terminal.setCursorPosition(player.getX(), player.getY());
-       terminal.putCharacter(player.getSymbol());
-       terminal.flush();
+        terminal.flush();
+
 
         while (continueReadingInput){
             //keyStroke= getKeyStroke(terminal);
@@ -71,15 +70,6 @@ public class Main {
         return terminal;
     }
 
-    /*private static KeyStroke getKeyStroke(Terminal terminal) throws Exception {
-        KeyStroke keyStroke;
-
-        do {
-            Thread.sleep(5);
-            keyStroke = terminal.pollInput();
-        } while (keyStroke == null);
-        return keyStroke;
-    }*/
     public static void movePlayer(KeyStroke type , Player player, Terminal terminal) throws Exception{
         switch (type.getKeyType()){
             case ArrowUp:
@@ -109,10 +99,25 @@ public class Main {
         //ev att man refererar direct till Player klassen ?
     }
 
-    //create monsters --> after merging Monster Class
-
-
     //create players --> after merging Player class
+    public static Player createPlayer(Terminal terminal) throws Exception {
+        Player player = new Player();
+        player.setX(10);
+        player.setY(15);
+        player.setSymbol('\u263A');
+
+        terminal.setCursorPosition(player.getX(), player.getY());
+        terminal.putCharacter(player.getSymbol());
+
+        return player;
+    }
+
+    //create monsters --> after merging Monster Class
+    /*public static Monster createMonster(){
+
+    }*/
+
+
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;

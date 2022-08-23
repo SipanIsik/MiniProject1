@@ -2,24 +2,22 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 public class Wall {
 
     private final char wallIcon = '\u2588';
     private final int width;
     private final int height;
-    private final List<Position> wall1;
-    private final List<Position> wall2;
-    private final List<Position> wall3;
-    private final List<Position> wall4;
+    private final List<Position> wall1 = new ArrayList<>();
+    private final List<Position> wall2 = new ArrayList<>();
+    private final List<Position> wall3 = new ArrayList<>();
+    private final List<Position> wall4 = new ArrayList<>();
 
-    public Wall(int width, int height, List<Position> wall1, List<Position> wall2, List<Position> wall3, List<Position> wall4) {
+    public Wall(int width, int height) {
         this.width = width;
         this.height = height;
-        this.wall1 = wall1;
-        this.wall2 = wall2;
-        this.wall3 = wall3;
-        this.wall4 = wall4;
+
     }
 
     public void drawMap(Terminal terminal) throws IOException {
