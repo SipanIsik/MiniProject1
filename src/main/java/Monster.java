@@ -31,6 +31,17 @@ public class Monster {
 
     public int getOldMY() {return oldMY;}
 
+    public static void setMx(int mx) {
+        Mx = mx;
+    }
+
+    public static void setMy(int my) {
+        My = my;
+    }
+
+    public void setMonsterSymbol(char monsterSymbol) {
+        MonsterSymbol = monsterSymbol;
+    }
 
     public void moveTowards(Player player) {
         oldMX = Mx;
