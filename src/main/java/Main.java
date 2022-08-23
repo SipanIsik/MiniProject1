@@ -11,7 +11,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //start-deklaration
+
+        //START-deklaration
         boolean continueReadingInput= true;
         KeyStroke keyStroke= null;
         KeyStroke latestKeyStroke= null;
@@ -20,15 +21,12 @@ public class Main {
         //WALL
        Wall wall= new Wall(100, 50);
        wall.drawMap(terminal);
-
        //MONSTER
         Monster monster = createMonster(terminal);
-
         //PLAYER
         Player player = createPlayer(terminal);
 
         terminal.flush();
-
 
         while (continueReadingInput){
 
