@@ -8,7 +8,7 @@ public class Player {
     public Player(int x, int y, char symbol) {
         this.x = x;
         this.y = y;
-        this.Symbol = symbol;
+        this.Symbol = Symbol;
         this.PreviousX=x;
         this.PreviousY=y;
     }
