@@ -6,20 +6,21 @@ import java.io.IOException;
 
 public class Monster {
 
-    private static int Mx;
-    private static int My;
+    private int Mx;
+    private int My;
     private char MonsterSymbol;
-    private static int oldMX;
-    private static int oldMY;
+    private int oldMX;
+    private int oldMY;
 
-
-    public Monster(int mx, int my, char monsterSymbol)  {
+    public Monster(int mx, int my, char monsterSymbol) {
         Mx = mx;
         My = my;
         MonsterSymbol = monsterSymbol;
         this.oldMX = oldMX;
         this.oldMY = oldMY;
     }
+
+
 
     public int getMx() {return Mx;}
 
@@ -31,11 +32,11 @@ public class Monster {
 
     public int getOldMY() {return oldMY;}
 
-    public static void setMx(int mx) {
+    public void setMx(int mx) {
         Mx = mx;
     }
 
-    public static void setMy(int my) {
+    public void setMy(int my) {
         My = my;
     }
 
