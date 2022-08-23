@@ -45,7 +45,7 @@ public class Main {
         return terminal;
     }
 
-    private static KeyStroke getKeyStroke(Terminal terminal){
+    private static KeyStroke getKeyStroke(Terminal terminal) throws Exception {
         KeyStroke keyStroke;
         do {
             Thread.sleep(5);
