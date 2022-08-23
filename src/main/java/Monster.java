@@ -13,7 +13,7 @@ public class Monster {
     private static int oldMY;
 
 
-    public Monster(int mx, int my, char monsterSymbol, int oldMX, int oldMY) throws InterruptedException {
+    public Monster(int mx, int my, char monsterSymbol)  {
         Mx = mx;
         My = my;
         MonsterSymbol = monsterSymbol;
