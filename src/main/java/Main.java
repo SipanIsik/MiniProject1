@@ -12,27 +12,43 @@ public class Main {
         //start-deklaration
         boolean continueReadingInput= true;
         KeyStroke keyStroke= null;
+        KeyStroke latestKeyStroke= null;
 
        Terminal terminal= createTerminal();
 
-       final char play= '\u263A';
+      Player player = new Player();
+
+      player.setX(10);
+      player.setY(15);
+      player.setSymbol('\u263A');
+
+       terminal.setCursorPosition(player.getX(), player.getY());
+       terminal.putCharacter(player.getSymbol());
+       terminal.flush();
 
         while (continueReadingInput){
-            keyStroke= getKeyStroke(terminal);
+            //keyStroke= getKeyStroke(terminal);
+
+            int index = 0;
+            do {
+                index++;
+                if (index % 50 == 0) {
+                    if (latestKeyStroke != null) {
+                        movePlayer(latestKeyStroke,player,terminal);
+                    }
+                }
+                Thread.sleep(5); // might throw InterruptedException
+                keyStroke = terminal.pollInput();
+
+            } while (keyStroke == null);
+            latestKeyStroke = keyStroke;
 
             KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
 
-           // moveCharacter(type, player, terminal);
-
-            //terminal.setCursorPosition(20,20);
-            //terminal.putCharacter(c);
-
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
-
             }
-            //moveCharacter(type, 20, 20);
 
             terminal.flush();
         }
@@ -48,36 +64,36 @@ public class Main {
         return terminal;
     }
 
-    private static KeyStroke getKeyStroke(Terminal terminal) throws Exception {
+    /*private static KeyStroke getKeyStroke(Terminal terminal) throws Exception {
         KeyStroke keyStroke;
+
         do {
             Thread.sleep(5);
             keyStroke = terminal.pollInput();
         } while (keyStroke == null);
         return keyStroke;
-    }
-    public static void movePlayer(KeyStroke type , Position player, Terminal terminal) throws Exception{
-        Position oldPosition= new Position(player.x , player.y);
+    }*/
+    public static void movePlayer(KeyStroke type , Player player, Terminal terminal) throws Exception{
         switch (type.getKeyType()){
             case ArrowUp:
-                player.y--;
+                player.moveUp();
                 break;
             case ArrowDown:
-                player.y++;
+                player.moveDown();
                 break;
             case ArrowLeft:
-                player.x--;
+                player.moveLeft();
                 break;
             case ArrowRight:
-                player.x++;
+                player.moveRight();
                 break;
         }
         //Clean old position
-        terminal.setCursorPosition(oldPosition.x, oldPosition.y);
+        terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
 
-        terminal.setCursorPosition(player.x, player.y);
-        terminal.putCharacter('X');
+        terminal.setCursorPosition(player.getX(), player.getY());
+        terminal.putCharacter(player.getSymbol());
 
         terminal.flush();
 

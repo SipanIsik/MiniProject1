@@ -5,6 +5,14 @@ public class Player {
     private int PreviousY;
     private char Symbol;
 
+    public Player(){
+
+    }
+
+    public void setSymbol(char symbol) {
+        Symbol = symbol;
+    }
+
     public Player(int x, int y, char symbol) {
         this.x = x;
         this.y = y;
@@ -12,6 +20,7 @@ public class Player {
         this.PreviousX=x;
         this.PreviousY=y;
     }
+
     public int getX() {
         return x;
     }
