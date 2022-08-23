@@ -12,12 +12,18 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+       Terminal terminal= createTerminal();
+
+
+    }
+
+
+
+    private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
         Terminal terminal = terminalFactory.createTerminal();
-        TerminalSize ts = new TerminalSize(100, 120);
-        terminalFactory.setInitialTerminalSize(ts);
-
         terminal.setCursorVisible(false);
-
+        return terminal;
     }
 }
