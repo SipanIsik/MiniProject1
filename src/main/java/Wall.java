@@ -5,18 +5,6 @@ import java.io.IOException;
 import java.util.List;
 public class Wall {
 
-    //Tillfällig terminal
-    public static DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-    public static Terminal terminal;
-
-    static {
-        try {
-            terminal = terminalFactory.createTerminal();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private final char wallIcon = '\u2588';
     private final int width;
     private final int height;
@@ -34,8 +22,7 @@ public class Wall {
         this.wall4 = wall4;
     }
 
-    public void drawMap() throws IOException {
-        terminal.setCursorVisible(false);
+    public void drawMap(Terminal terminal) throws IOException {
         for (int i = 0; i < this.width; i++) {
             if (i == 0) {
                 for (int j = 0; j < this.height; j++) {

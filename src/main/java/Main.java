@@ -4,10 +4,15 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
-
+    static List<Position> wall1 = new ArrayList<>();
+    static List<Position> wall2 = new ArrayList<>();
+    static List<Position> wall3 = new ArrayList<>();
+    static List<Position> wall4 = new ArrayList<>();
     public static void main(String[] args) throws Exception {
         //start-deklaration
         boolean continueReadingInput= true;
@@ -15,6 +20,8 @@ public class Main {
         KeyStroke latestKeyStroke= null;
 
        Terminal terminal= createTerminal();
+       Wall wall= new Wall(50, 50, wall1, wall2, wall3, wall4);
+       wall.drawMap(terminal);
 
       Player player = new Player();
 
