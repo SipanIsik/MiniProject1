@@ -4,41 +4,56 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //start-deklaration
+
+        //START-deklaration
         boolean continueReadingInput= true;
         KeyStroke keyStroke= null;
+        KeyStroke latestKeyStroke= null;
+        Terminal terminal= createTerminal();
 
-       Terminal terminal= createTerminal();
+        //WALL
+       Wall wall= new Wall(100, 50);
+       wall.drawMap(terminal);
+       //MONSTER
+        Monster monster = createMonster(terminal);
+        //PLAYER
+        Player player = createPlayer(terminal);
 
-       final char play= '\u263A';
+        terminal.flush();
 
         while (continueReadingInput){
-            keyStroke= getKeyStroke(terminal);
+
+            int index = 0;
+            do {
+                index++;
+                if (index % 50 == 0) {
+                    if (latestKeyStroke != null) {
+                        movePlayer(latestKeyStroke,player,terminal);
+                    }
+                }
+                Thread.sleep(5); // might throw InterruptedException
+                keyStroke = terminal.pollInput();
+
+            } while (keyStroke == null);
+            latestKeyStroke = keyStroke;
 
             KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
 
-           // moveCharacter(type, player, terminal);
-
-            //terminal.setCursorPosition(20,20);
-            //terminal.putCharacter(c);
-
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
-
             }
-            //moveCharacter(type, 20, 20);
 
             terminal.flush();
         }
     }
-
-
 
     private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -48,48 +63,51 @@ public class Main {
         return terminal;
     }
 
-    private static KeyStroke getKeyStroke(Terminal terminal) throws Exception {
-        KeyStroke keyStroke;
-        do {
-            Thread.sleep(5);
-            keyStroke = terminal.pollInput();
-        } while (keyStroke == null);
-        return keyStroke;
-    }
-    public static void movePlayer(KeyStroke type , Position player, Terminal terminal) throws Exception{
-        Position oldPosition= new Position(player.x , player.y);
+    public static void movePlayer(KeyStroke type , Player player, Terminal terminal) throws Exception{
         switch (type.getKeyType()){
             case ArrowUp:
-                player.y--;
+                player.moveUp();
                 break;
             case ArrowDown:
-                player.y++;
+                player.moveDown();
                 break;
             case ArrowLeft:
-                player.x--;
+                player.moveLeft();
                 break;
             case ArrowRight:
-                player.x++;
+                player.moveRight();
                 break;
         }
         //Clean old position
-        terminal.setCursorPosition(oldPosition.x, oldPosition.y);
+        terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
 
-        terminal.setCursorPosition(player.x, player.y);
-        terminal.putCharacter('X');
+        terminal.setCursorPosition(player.getX(), player.getY());
+        terminal.putCharacter(player.getSymbol());
 
         terminal.flush();
 
     }
-    public static void handlePlayer(){
-        //ev att man refererar direct till Player klassen ?
+
+    public static Player createPlayer(Terminal terminal) throws Exception {
+        Player player = new Player();
+        player.setX(10);
+        player.setY(15);
+        player.setSymbol('\uF04A');
+
+        terminal.setCursorPosition(player.getX(), player.getY());
+        terminal.putCharacter(player.getSymbol());
+
+        return player;
     }
 
-    //create monsters --> after merging Monster Class
+    public static Monster createMonster(Terminal terminal) throws Exception {
+        Monster monster= new Monster(5, 5, '¤');
+        terminal.setCursorPosition(monster.getMx(), monster.getMy());
+        terminal.putCharacter(monster.getMonsterSymbol());
 
-
-    //create players --> after merging Player class
+        return monster;
+    }
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
