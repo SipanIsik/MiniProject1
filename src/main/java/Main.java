@@ -36,7 +36,9 @@ public class Main {
                 if (index % 50 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
-                        checkGameOver(terminal, player, monster);
+                        if (checkGameOver(terminal, player, monster)){
+                            continueReadingInput = false;
+                        }
                     }
                 }
                 Thread.sleep(5); // might throw InterruptedException
@@ -47,10 +49,6 @@ public class Main {
 
             KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
-
-            //checkGameOver(terminal , player , monster);
-            System.out.println(player.getX() + " + " +  player.getY());
-            System.out.println(monster.getMx() + " + " + monster.getMy());
 
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
@@ -126,8 +124,10 @@ public class Main {
         return continueReadingInput;
     }
 
-    private static void checkGameOver(Terminal terminal, Player player, Monster monster) throws Exception {
+    private static boolean checkGameOver(Terminal terminal, Player player, Monster monster) throws Exception {
+        boolean continueReadingInput = false;
         if(player.getX() == monster.getMx() && player.getY() == monster.getMy()){
+            continueReadingInput = true;
             terminal.setCursorPosition(20,10);
             terminal.putString("GAME OVER!");
             terminal.putCharacter('\u2639');
@@ -135,5 +135,6 @@ public class Main {
             Thread.sleep(500);
             terminal.close();
         }
+        return continueReadingInput;
     }
 }
