@@ -26,11 +26,17 @@ public class Main {
         //Monster monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
-        List<Position> monsters = new ArrayList<>();
+       List <Monster> monster= createMonster();
+
+      /* List<Position> monsters = new ArrayList<>();
         monsters.add(new Position(67, 3));
         monsters.add(new Position(23, 23));
         monsters.add(new Position(83, 43));
         monsters.add(new Position(73, 55));
+
+       */
+
+
 
 
         terminal.flush();
@@ -44,7 +50,7 @@ public class Main {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke, player, terminal);
                         if (index % 80 == 0) {
-                            continueReadingInput = moveMonsters(monsters, player, terminal);
+                            continueReadingInput = moveMonsters(monster, player, terminal);
                             terminal.flush();
                             if (!continueReadingInput) {
                                 terminal.close();
@@ -63,13 +69,13 @@ public class Main {
             latestKeyStroke = keyStroke;
 
 
-            KeyType type = keyStroke.getKeyType();
-            Character c = keyStroke.getCharacter();
+            if (keyStroke != null) {
+                Character c = keyStroke.getCharacter();
 
+                if (c == Character.valueOf('q')) {
+                    continueReadingInput = checkRequestToQuit(terminal);
 
-            if (c == Character.valueOf('q')) {
-                continueReadingInput = checkRequestToQuit(terminal);
-
+                }
             }
 
 
@@ -124,12 +130,22 @@ public class Main {
         return player;
     }
 
-    public static Monster createMonster(Terminal terminal) throws Exception {
+    public static List<Monster> createMonster() throws Exception {
+        List<Monster> monsters = new ArrayList<>();
+        monsters.add(new Monster(3, 3, 'X'));
+        monsters.add(new Monster(23, 23, 'X'));
+        monsters.add(new Monster(23, 3, 'C'));
+        monsters.add(new Monster(3, 23, 'X'));
+        return monsters;
+
+       /*
         Monster monster = new Monster(5, 5, 'X');
         terminal.setCursorPosition(monster.getMx(), monster.getMy());
         terminal.putCharacter(monster.getMonsterSymbol());
 
         return monster;
+
+        */
     }
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
@@ -144,32 +160,33 @@ public class Main {
         return continueReadingInput;
     }
 
-    public static boolean moveMonsters(List<Position> monsters, Player player, Terminal terminal) throws Exception {
-        for (Position monster : monsters) {
-            terminal.setCursorPosition(monster.x, monster.y);
+    public static boolean moveMonsters(List<Monster> monsters, Player player, Terminal terminal) throws Exception {
+        for (Monster monster : monsters) {
+            terminal.setCursorPosition(monster.getMx(), monster.getMy());
             terminal.putCharacter(' ');
 
-            if (player.getX() > monster.x) {
-                monster.x++;
-            } else if (player.getX() < monster.x) {
-                monster.x--;
+            if (player.getX() > monster.getMx()) {
+                monster.setMx(monster.getMx()+1);
+            } else if (player.getX() < monster.getMx()) {
+                monster.setMx(monster.getMx()-1);
             }
-            if (player.getY() > monster.y) {
-                monster.y++;
-            } else if (player.getY() < monster.y) {
-                monster.y--;
+            if (player.getY() > monster.getMy()) {
+                monster.setMy(monster.getMy() +1);
+            } else if (player.getY() < monster.getMx()) {
+                monster.setMy(monster.getMy() -1);
             }
 
-            terminal.setCursorPosition(monster.x, monster.y);
+            terminal.setCursorPosition(monster.getMx(), monster.getMy());
             terminal.putCharacter('\u123c');
 
         }
 
         terminal.flush();
 
-        for (Position monster : monsters) {
-            if (monster.x == player.getX() && monster.y == player.getY()) {
+        for (Monster monster : monsters) {
+            if (monster.getMx() == player.getX() && monster.getMy() == player.getY()) {
                 terminal.bell();
+
                 return false;
             }
         }
