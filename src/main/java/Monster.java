@@ -7,10 +7,9 @@ public class Monster {
     private int oldMX;
     private int oldMY;
 
-    public Monster(int mx, int my, char monsterSymbol) {
+    public Monster(int mx, int my) {
         Mx = mx;
         My = my;
-        MonsterSymbol = monsterSymbol;
     }
 
 

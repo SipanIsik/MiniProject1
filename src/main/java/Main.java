@@ -26,14 +26,6 @@ public class Main {
         Player player = createPlayer(terminal);
         List<Monster> monster = createMonster();
 
-      /* List<Position> monsters = new ArrayList<>();
-        monsters.add(new Position(67, 3));
-        monsters.add(new Position(23, 23));
-        monsters.add(new Position(83, 43));
-        monsters.add(new Position(73, 55));
-
-       */
-
 
         terminal.flush();
 
@@ -129,10 +121,10 @@ public class Main {
 
     public static List<Monster> createMonster() throws Exception {
         List<Monster> monsters = new ArrayList<>();
-        monsters.add(new Monster(3, 3, 'X'));
-        monsters.add(new Monster(23, 23, 'X'));
-        monsters.add(new Monster(23, 3, 'C'));
-        monsters.add(new Monster(3, 23, 'X'));
+        monsters.add(new Monster(3, 3));
+        monsters.add(new Monster(23, 23));
+        monsters.add(new Monster(23, 3));
+        monsters.add(new Monster(3, 23));
         return monsters;
 
     }
@@ -153,7 +145,6 @@ public class Main {
             } else if (player.getY() < monster.getMx()) {
                 monster.setMy(monster.getMy() - 1);
             }
-
 
             if (monster.getMx() == wall.getWidth()){
                 monster.setMx(monster.getMx()+1);
@@ -185,9 +176,6 @@ public class Main {
             }
 
            */
-
-
-
 
             terminal.setCursorPosition(monster.getMx(), monster.getMy());
             terminal.putCharacter('\u123c');
