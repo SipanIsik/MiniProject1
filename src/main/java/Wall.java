@@ -19,6 +19,12 @@ public class Wall {
         this.height = height;
 
     }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
 
     public void drawMap(Terminal terminal) throws IOException {
         for (int i = 0; i < this.width; i++) {

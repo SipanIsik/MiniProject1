@@ -22,11 +22,9 @@ public class Main {
         //WALL
         Wall wall = new Wall(100, 50);
         wall.drawMap(terminal);
-        //MONSTER
-        //Monster monster = createMonster(terminal);
-        //PLAYER
+
         Player player = createPlayer(terminal);
-       List <Monster> monster= createMonster();
+        List<Monster> monster = createMonster();
 
       /* List<Position> monsters = new ArrayList<>();
         monsters.add(new Position(67, 3));
@@ -35,8 +33,6 @@ public class Main {
         monsters.add(new Position(73, 55));
 
        */
-
-
 
 
         terminal.flush();
@@ -50,7 +46,7 @@ public class Main {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke, player, terminal);
                         if (index % 80 == 0) {
-                            continueReadingInput = moveMonsters(monster, player, terminal);
+                            continueReadingInput = moveMonsters(monster, player, terminal,wall);
                             terminal.flush();
                             if (!continueReadingInput) {
                                 terminal.close();
@@ -91,6 +87,7 @@ public class Main {
 
         return terminal;
     }
+
 
     public static void movePlayer(KeyStroke type, Player player, Terminal terminal) throws Exception {
         switch (type.getKeyType()) {
@@ -138,48 +135,65 @@ public class Main {
         monsters.add(new Monster(3, 23, 'X'));
         return monsters;
 
-       /*
-        Monster monster = new Monster(5, 5, 'X');
-        terminal.setCursorPosition(monster.getMx(), monster.getMy());
-        terminal.putCharacter(monster.getMonsterSymbol());
-
-        return monster;
-
-        */
     }
 
-    private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
-        boolean continueReadingInput = false;
-        terminal.setCursorPosition(20, 10);
-        terminal.putString("Exiting the Game!");
-        terminal.putCharacter('\u2639');
-        terminal.flush();
-        Thread.sleep(500);
-        terminal.close();
 
-        return continueReadingInput;
-    }
-
-    public static boolean moveMonsters(List<Monster> monsters, Player player, Terminal terminal) throws Exception {
+    public static boolean moveMonsters(List<Monster> monsters, Player player, Terminal terminal, Wall wall) throws Exception {
         for (Monster monster : monsters) {
             terminal.setCursorPosition(monster.getMx(), monster.getMy());
             terminal.putCharacter(' ');
 
             if (player.getX() > monster.getMx()) {
-                monster.setMx(monster.getMx()+1);
+                monster.setMx(monster.getMx() + 1);
             } else if (player.getX() < monster.getMx()) {
-                monster.setMx(monster.getMx()-1);
+                monster.setMx(monster.getMx() - 1);
             }
             if (player.getY() > monster.getMy()) {
-                monster.setMy(monster.getMy() +1);
+                monster.setMy(monster.getMy() + 1);
             } else if (player.getY() < monster.getMx()) {
-                monster.setMy(monster.getMy() -1);
+                monster.setMy(monster.getMy() - 1);
             }
+
+
+            if (monster.getMx() == wall.getWidth()){
+                monster.setMx(monster.getMx()+1);
+            } else if (monster.getMx()== wall.getHeight()) {
+                monster.setMx(monster.getMx()+1);
+
+            } else if (monster.getMy() == wall.getWidth()){
+                monster.setMx(monster.getMx()+1);
+            } else if (monster.getMy()== wall.getHeight()) {
+                monster.setMx(monster.getMx()+1);
+
+            }
+
+
+          /* boolean crashIntoObsticle = false;
+            for (Monster p : wall. {
+                if (p.getMx() == && p.getMy() == y) {
+                    crashIntoObsticle = true;
+                }
+            }
+            if (crashIntoObsticle) {
+                x = monster.getOldMX();
+                y = monster.getOldMY();
+            } else {
+                terminal.setCursorPosition(monster.getOldMX(), monster.getMy()); // move cursor to old position
+                terminal.putCharacter(' '); // clean up by printing space on old position
+                terminal.setCursorPosition(x, y);
+                terminal.putCharacter(monster.getMonsterSymbol());
+            }
+
+           */
+
+
+
 
             terminal.setCursorPosition(monster.getMx(), monster.getMy());
             terminal.putCharacter('\u123c');
 
         }
+
 
         terminal.flush();
 
@@ -193,7 +207,18 @@ public class Main {
         return true;
 
 
+    }
 
+        private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
+        boolean continueReadingInput = false;
+        terminal.setCursorPosition(20, 10);
+        terminal.putString("Exiting the Game!");
+        terminal.putCharacter('\u2639');
+        terminal.flush();
+        Thread.sleep(500);
+        terminal.close();
+
+        return continueReadingInput;
     }
 
 }
