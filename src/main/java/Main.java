@@ -10,12 +10,13 @@ import java.util.Random;
 
 
 public class Main {
+    public static Random random = new Random();
 
     public static void main(String[] args) throws Exception {
 
         //START-deklaration
         boolean continueReadingInput= true;
-        KeyStroke keyStroke= null;
+        KeyStroke keyStroke;
         KeyStroke latestKeyStroke= null;
         Terminal terminal= createTerminal();
 
@@ -28,12 +29,12 @@ public class Main {
         Player player = createPlayer(terminal);
         //FOOD
         Food food = createFood(terminal);
-        int countFood=0;
+        int countPoints=0;
+        int point;
 
         terminal.flush();
 
         while (continueReadingInput){
-
             int index = 0;
             do {
                 index++;
@@ -43,10 +44,17 @@ public class Main {
                         if (checkGameOver(terminal, player, monster)){
                             continueReadingInput = false;
                         }
-                        if(countFood==5) {
+                        if(countPoints==5) {
                             continueReadingInput = playerWon(terminal);
                         }
-                        countFood= countFood + checkFoodEaten(terminal, player, food);
+                        //POINTS
+                        point= getPoint(terminal, player, food);
+                        countPoints= countPoints + point;
+
+                        if (1 == point){
+                            food = createFood(terminal);
+
+                        }
                     }
                 }
                 Thread.sleep(5); // might throw InterruptedException
@@ -55,8 +63,10 @@ public class Main {
             } while (keyStroke == null);
             latestKeyStroke = keyStroke;
 
-            KeyType type=keyStroke.getKeyType();
+            //KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
+
+            System.out.println("count points " + countPoints);
 
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
@@ -125,7 +135,10 @@ public class Main {
         /*for (int i = 1; i <= numberOfFood; i++) {
             Random placeFoodX = new Random();
             Random placeFoodY = new Random();*/
-        Food food = new Food(30, 20);
+        Food food = new Food((random.nextInt(10,70)), (random.nextInt(10,30)));
+        System.out.println("new food x " + food.getfX());
+        System.out.println("new food y " + food.getfY());
+
         terminal.setCursorPosition(food.getfX(), food.getfY());
         terminal.putCharacter(food.getfSymbol());
 
@@ -160,7 +173,7 @@ public class Main {
 
     private static boolean playerWon(Terminal terminal) throws Exception {
 
-        boolean continueReadingInput = true;
+        boolean continueReadingInput = false;
         terminal.setCursorPosition(20, 10);
         terminal.putString("YOU WON!! CONGRATULATIONS!");
         terminal.putCharacter('\uF04A');
@@ -172,12 +185,11 @@ public class Main {
     }
 
 
-    public static int checkFoodEaten(Terminal terminal, Player player, Food food) throws Exception {
+    public static int getPoint(Terminal terminal, Player player, Food food) throws Exception {
         int count=0;
         if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
             terminal.bell();
             count++;
-            createFood(terminal);
         }
         return count;
         }
