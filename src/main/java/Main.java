@@ -14,29 +14,28 @@ public class Main {
 
 
         //START-deklaration
-        boolean continueReadingInput= true;
-        KeyStroke keyStroke= null;
-        KeyStroke latestKeyStroke= null;
-        Terminal terminal= createTerminal();
+        boolean continueReadingInput = true;
+        KeyStroke keyStroke = null;
+        KeyStroke latestKeyStroke = null;
+        Terminal terminal = createTerminal();
 
         //WALL
-       Wall wall= new Wall(100, 50);
-       wall.drawMap(terminal);
-       //MONSTER
+        Wall wall = new Wall(100, 50);
+        wall.drawMap(terminal);
+        //MONSTER
         //Monster monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
-
         List<Position> monsters = new ArrayList<>();
         monsters.add(new Position(67, 3));
-        monsters.add(new Position(23, 223));
+        monsters.add(new Position(23, 23));
         monsters.add(new Position(83, 43));
         monsters.add(new Position(73, 55));
 
 
         terminal.flush();
 
-        while (continueReadingInput){
+        while (continueReadingInput) {
 
             int index = 0;
             do {
@@ -44,10 +43,9 @@ public class Main {
                 if (index % 20 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke, player, terminal);
-
-
-                        if (index % 100 == 0) {
+                        if (index % 80 == 0) {
                             continueReadingInput = moveMonsters(monsters, player, terminal);
+                            terminal.flush();
                             if (!continueReadingInput) {
                                 terminal.close();
                                 break;
@@ -55,22 +53,24 @@ public class Main {
                         }
                     }
                 }
-                    Thread.sleep(5); // might throw InterruptedException
-                    keyStroke = terminal.pollInput();
+
+
+                Thread.sleep(5); // might throw InterruptedException
+                keyStroke = terminal.pollInput();
+
 
             } while (keyStroke == null);
             latestKeyStroke = keyStroke;
 
 
+            KeyType type = keyStroke.getKeyType();
+            Character c = keyStroke.getCharacter();
 
-            KeyType type=keyStroke.getKeyType();
-            Character c=keyStroke.getCharacter();
 
-            if(c==Character.valueOf('q')) {
-                continueReadingInput= checkRequestToQuit(terminal);
+            if (c == Character.valueOf('q')) {
+                continueReadingInput = checkRequestToQuit(terminal);
 
             }
-
 
 
             terminal.flush();
@@ -86,8 +86,8 @@ public class Main {
         return terminal;
     }
 
-    public static void movePlayer(KeyStroke type , Player player, Terminal terminal) throws Exception{
-        switch (type.getKeyType()){
+    public static void movePlayer(KeyStroke type, Player player, Terminal terminal) throws Exception {
+        switch (type.getKeyType()) {
             case ArrowUp:
                 player.moveUp();
                 break;
@@ -125,7 +125,7 @@ public class Main {
     }
 
     public static Monster createMonster(Terminal terminal) throws Exception {
-        Monster monster= new Monster(5, 5, 'X');
+        Monster monster = new Monster(5, 5, 'X');
         terminal.setCursorPosition(monster.getMx(), monster.getMy());
         terminal.putCharacter(monster.getMonsterSymbol());
 
@@ -133,8 +133,8 @@ public class Main {
     }
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
-        boolean continueReadingInput =false;
-        terminal.setCursorPosition(20,10);
+        boolean continueReadingInput = false;
+        terminal.setCursorPosition(20, 10);
         terminal.putString("Exiting the Game!");
         terminal.putCharacter('\u2639');
         terminal.flush();
@@ -144,7 +144,7 @@ public class Main {
         return continueReadingInput;
     }
 
-    public static boolean moveMonsters (List<Position> monsters, Player player, Terminal terminal) throws Exception {
+    public static boolean moveMonsters(List<Position> monsters, Player player, Terminal terminal) throws Exception {
         for (Position monster : monsters) {
             terminal.setCursorPosition(monster.x, monster.y);
             terminal.putCharacter(' ');
@@ -161,19 +161,22 @@ public class Main {
             }
 
             terminal.setCursorPosition(monster.x, monster.y);
-            terminal.putCharacter('\u265c');
+            terminal.putCharacter('\u123c');
 
         }
+
         terminal.flush();
 
         for (Position monster : monsters) {
-            if (monster.x == player.getX() && monster.y == player.getY()) {;
+            if (monster.x == player.getX() && monster.y == player.getY()) {
                 terminal.bell();
-                System.out.println("GAME OVER!");
                 return false;
             }
         }
         return true;
 
+
+
     }
+
 }
