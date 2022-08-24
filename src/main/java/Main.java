@@ -12,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+
         //START-deklaration
         boolean continueReadingInput= true;
         KeyStroke keyStroke= null;
@@ -26,6 +27,13 @@ public class Main {
         //PLAYER
         Player player = createPlayer(terminal);
 
+        List<Position> monsters = new ArrayList<>();
+        monsters.add(new Position(3, 3));
+        monsters.add(new Position(23, 23));
+        monsters.add(new Position(23, 3));
+        monsters.add(new Position(3, 23));
+
+
         terminal.flush();
 
         while (continueReadingInput){
@@ -38,22 +46,40 @@ public class Main {
                         movePlayer(latestKeyStroke,player,terminal);
                     }
                 }
-                Thread.sleep(5); // might throw InterruptedException
-                keyStroke = terminal.pollInput();
+                   Thread.sleep(5); // might throw InterruptedException
+               keyStroke = terminal.pollInput();
+
+
+                    //index++;
+                    if (index % 100 == 0) {
+                        continueReadingInput = moveMonsters(monsters, player, terminal);
+                        if (!continueReadingInput) {
+                            terminal.close();
+                            break;
+                        }
+                    }
+                    Thread.sleep(5); // might throw InterruptedException
+                    keyStroke = terminal.pollInput();
 
             } while (keyStroke == null);
             latestKeyStroke = keyStroke;
+
+
 
             KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
 
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
+
             }
+
+
 
             terminal.flush();
         }
     }
+
 
     private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -119,5 +145,37 @@ public class Main {
         terminal.close();
 
         return continueReadingInput;
+    }
+
+    public static boolean moveMonsters (List<Position> monsters, Player player, Terminal terminal) throws Exception {
+        for (Position monster : monsters) {
+            terminal.setCursorPosition(monster.x, monster.y);
+            terminal.putCharacter(' ');
+
+            if (player.getX() > monster.x) {
+                monster.x++;
+            } else if (player.getX() < monster.x) {
+                monster.x--;
+            }
+            if (player.getY() > monster.y) {
+                monster.y++;
+            } else if (player.getY() < monster.y) {
+                monster.y--;
+            }
+
+            terminal.setCursorPosition(monster.x, monster.y);
+            terminal.putCharacter('X');
+        }
+        terminal.flush();
+
+        for (Position monster : monsters) {
+            if (monster.x == player.getX() && monster.y == player.getY()) {;
+                terminal.bell();
+                System.out.println("GAME OVER!");
+                return false;
+            }
+        }
+        return true;
+
     }
 }

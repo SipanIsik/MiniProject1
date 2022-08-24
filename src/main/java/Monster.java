@@ -3,6 +3,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Monster {
 
@@ -16,21 +17,28 @@ public class Monster {
         Mx = mx;
         My = my;
         MonsterSymbol = monsterSymbol;
-        this.oldMX = oldMX;
-        this.oldMY = oldMY;
     }
 
 
+    public int getMx() {
+        return Mx;
+    }
 
-    public int getMx() {return Mx;}
+    public int getMy() {
+        return My;
+    }
 
-    public int getMy() {return My;}
+    public char getMonsterSymbol() {
+        return MonsterSymbol;
+    }
 
-    public char getMonsterSymbol() {return MonsterSymbol;}
+    public int getOldMX() {
+        return oldMX;
+    }
 
-    public int getOldMX() {return oldMX;}
-
-    public int getOldMY() {return oldMY;}
+    public int getOldMY() {
+        return oldMY;
+    }
 
     public void setMx(int mx) {
         Mx = mx;
@@ -44,32 +52,7 @@ public class Monster {
         MonsterSymbol = monsterSymbol;
     }
 
-    public void moveTowards(Player player) {
-        oldMX = Mx;
-        oldMY = My;
 
-        int diffX = Mx - player.getX();
-        int absDiffX = Math.abs(diffX);
-        int diffY = My - player.getY();
-        int absDiffY = Math.abs(diffY);
-
-
-        if (absDiffX > absDiffY) {
-            // Move horizontal! <--->
-            if (diffX < 0) {
-                Mx += 1;
-            } else {
-                Mx -= 1;
-            }
-        } else if (absDiffX < absDiffY) {
-            // Move vertical! v / ^
-            if (diffY < 0) {
-                My += 1;
-            } else {
-                My -= 1;
-            }
-        }
-    }
 }
 
 
