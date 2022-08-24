@@ -23,15 +23,15 @@ public class Main {
        Wall wall= new Wall(100, 50);
        wall.drawMap(terminal);
        //MONSTER
-        Monster monster = createMonster(terminal);
+        //Monster monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
 
         List<Position> monsters = new ArrayList<>();
-        monsters.add(new Position(3, 3));
-        monsters.add(new Position(23, 23));
-        monsters.add(new Position(23, 3));
-        monsters.add(new Position(3, 23));
+        monsters.add(new Position(67, 3));
+        monsters.add(new Position(23, 223));
+        monsters.add(new Position(83, 43));
+        monsters.add(new Position(73, 55));
 
 
         terminal.flush();
@@ -41,21 +41,17 @@ public class Main {
             int index = 0;
             do {
                 index++;
-                if (index % 50 == 0) {
+                if (index % 20 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke, player, terminal);
-                    }
-
-                    //  Thread.sleep(5); // might throw InterruptedException
-                    // keyStroke = terminal.pollInput();
 
 
-                    //index++;
-                    if (index % 100 == 0) {
-                        continueReadingInput = moveMonsters(monsters, player, terminal);
-                        if (!continueReadingInput) {
-                            terminal.close();
-                            break;
+                        if (index % 100 == 0) {
+                            continueReadingInput = moveMonsters(monsters, player, terminal);
+                            if (!continueReadingInput) {
+                                terminal.close();
+                                break;
+                            }
                         }
                     }
                 }
@@ -165,7 +161,8 @@ public class Main {
             }
 
             terminal.setCursorPosition(monster.x, monster.y);
-            terminal.putCharacter('X');
+            terminal.putCharacter('\u265c');
+
         }
         terminal.flush();
 
