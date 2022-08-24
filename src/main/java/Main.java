@@ -6,6 +6,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Main {
@@ -25,6 +26,9 @@ public class Main {
         Monster monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
+        //FOOD
+        Food food = createFood(terminal);
+        int countFood=0;
 
         terminal.flush();
 
@@ -39,6 +43,10 @@ public class Main {
                         if (checkGameOver(terminal, player, monster)){
                             continueReadingInput = false;
                         }
+                        if(countFood==5) {
+                            continueReadingInput = playerWon(terminal);
+                        }
+                        countFood= countFood + checkFoodEaten(terminal, player, food);
                     }
                 }
                 Thread.sleep(5); // might throw InterruptedException
@@ -53,10 +61,11 @@ public class Main {
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
             }
-
             terminal.flush();
         }
     }
+
+
 
     private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -112,6 +121,17 @@ public class Main {
         return monster;
     }
 
+    public static Food createFood (Terminal terminal) throws Exception {
+        /*for (int i = 1; i <= numberOfFood; i++) {
+            Random placeFoodX = new Random();
+            Random placeFoodY = new Random();*/
+        Food food = new Food(30, 20);
+        terminal.setCursorPosition(food.getfX(), food.getfY());
+        terminal.putCharacter(food.getfSymbol());
+
+        return food;
+    }
+
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
         terminal.setCursorPosition(20,10);
@@ -137,4 +157,28 @@ public class Main {
         }
         return continueReadingInput;
     }
+
+    private static boolean playerWon(Terminal terminal) throws Exception {
+
+        boolean continueReadingInput = true;
+        terminal.setCursorPosition(20, 10);
+        terminal.putString("YOU WON!! CONGRATULATIONS!");
+        terminal.putCharacter('\uF04A');
+        terminal.flush();
+        Thread.sleep(500);
+        terminal.close();
+
+        return continueReadingInput;
+    }
+
+
+    public static int checkFoodEaten(Terminal terminal, Player player, Food food) throws Exception {
+        int count=0;
+        if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
+            terminal.bell();
+            count++;
+            createFood(terminal);
+        }
+        return count;
+        }
 }
