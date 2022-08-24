@@ -23,4 +23,15 @@ public class Food {
     public void setfY(int fY) {
         this.fY = fY;
     }
+
+    public char getfSymbol() {
+        return fSymbol;
+    }
+
+    public void randomFood(){
+
+    }
+    public void countFood(int c){
+
+    }
 }

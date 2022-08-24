@@ -6,15 +6,17 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Main {
+    public static Random random = new Random();
 
     public static void main(String[] args) throws Exception {
 
         //START-deklaration
         boolean continueReadingInput= true;
-        KeyStroke keyStroke= null;
+        KeyStroke keyStroke;
         KeyStroke latestKeyStroke= null;
         Terminal terminal= createTerminal();
 
@@ -26,17 +28,34 @@ public class Main {
         Monster monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
+        //FOOD
+        Food food = createFood(terminal);
+        int countPoints=0;
+        int point;
 
         terminal.flush();
 
         while (continueReadingInput){
-
             int index = 0;
             do {
                 index++;
                 if (index % 50 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
+                        if (checkGameOver(terminal, player, monster)){
+                            continueReadingInput = false;
+                        }
+                        if(countPoints==5) {
+                            continueReadingInput = playerWon(terminal);
+                        }
+                        //POINTS
+                        point= getPoint(terminal, player, food);
+                        countPoints= countPoints + point;
+
+                        if (1 == point){
+                            food = createFood(terminal);
+
+                        }
                     }
                 }
                 Thread.sleep(5); // might throw InterruptedException
@@ -45,16 +64,19 @@ public class Main {
             } while (keyStroke == null);
             latestKeyStroke = keyStroke;
 
-            KeyType type=keyStroke.getKeyType();
+            //KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
+
+            System.out.println("count points " + countPoints);
 
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
             }
-
             terminal.flush();
         }
     }
+
+
 
     private static Terminal createTerminal() throws IOException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -110,6 +132,20 @@ public class Main {
         return monster;
     }
 
+    public static Food createFood (Terminal terminal) throws Exception {
+        /*for (int i = 1; i <= numberOfFood; i++) {
+            Random placeFoodX = new Random();
+            Random placeFoodY = new Random();*/
+        Food food = new Food((random.nextInt(10,70)), (random.nextInt(10,30)));
+        System.out.println("new food x " + food.getfX());
+        System.out.println("new food y " + food.getfY());
+
+        terminal.setCursorPosition(food.getfX(), food.getfY());
+        terminal.putCharacter(food.getfSymbol());
+
+        return food;
+    }
+
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
         terminal.setCursorPosition(20,10);
@@ -121,4 +157,41 @@ public class Main {
 
         return continueReadingInput;
     }
+
+    private static boolean checkGameOver(Terminal terminal, Player player, Monster monster) throws Exception {
+        boolean continueReadingInput = false;
+        if(player.getX() == monster.getMx() && player.getY() == monster.getMy()){
+            continueReadingInput = true;
+            terminal.setCursorPosition(20,10);
+            terminal.putString("GAME OVER!");
+            terminal.putCharacter('\u2639');
+            terminal.flush();
+            Thread.sleep(500);
+            terminal.close();
+        }
+        return continueReadingInput;
+    }
+
+    private static boolean playerWon(Terminal terminal) throws Exception {
+
+        boolean continueReadingInput = false;
+        terminal.setCursorPosition(20, 10);
+        terminal.putString("YOU WON!! CONGRATULATIONS!");
+        terminal.putCharacter('\uF04A');
+        terminal.flush();
+        Thread.sleep(500);
+        terminal.close();
+
+        return continueReadingInput;
+    }
+
+
+    public static int getPoint(Terminal terminal, Player player, Food food) throws Exception {
+        int count=0;
+        if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
+            terminal.bell();
+            count++;
+        }
+        return count;
+        }
 }
