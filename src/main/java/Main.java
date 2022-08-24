@@ -100,7 +100,10 @@ public class Main {
             case ArrowRight:
                 player.moveRight();
                 break;
+
         }
+        //Calls method to block player from going through the walls.
+        blockPlayerWall(player,terminal);
         //Clean old position
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
@@ -109,6 +112,62 @@ public class Main {
         terminal.putCharacter(player.getSymbol());
 
         terminal.flush();
+
+    }
+
+    public static void blockPlayerWall(Player player, Terminal terminal) throws Exception{
+        boolean crashIntoObsticle = false;
+
+        for (Position p:Wall.wall1){
+            if (p.x == player.getX() && p.y == player.getY()) {
+                crashIntoObsticle = true;
+                break;
+            }
+        }
+
+            for (Position o :Wall.wall2) {
+                if (o.x == player.getX() && o.y == player.getY()) {
+                    crashIntoObsticle = true;
+                    break;
+                }
+        }
+
+                for (Position i :Wall.wall3) {
+                    if (i.x == player.getX() && i.y == player.getY()) {
+                        crashIntoObsticle = true;
+                        break;
+                    }
+        }
+
+                    for (Position u :Wall.wall4) {
+                        if (u.x == player.getX() && u.y == player.getY()) {
+                            crashIntoObsticle = true;
+                            break;
+                        }
+        }
+
+                        for (Position y :Wall.maze1) {
+                            if (y.x == player.getX() && y.y == player.getY()) {
+                                crashIntoObsticle = true;
+                                break;
+                            }
+        }
+
+                            for (Position t :Wall.maze2) {
+                                if (t.x == player.getX() && t.y == player.getY()) {
+                                    crashIntoObsticle = true;
+                                    break;
+                                }
+        }
+
+        if (crashIntoObsticle) {
+            player.setX(player.getPreviousX());
+            player.setY(player.getPreviousY());
+
+            terminal.setCursorPosition(player.getX(), player.getY());
+            terminal.putCharacter(player.getSymbol());
+            terminal.flush();
+        }
 
     }
 

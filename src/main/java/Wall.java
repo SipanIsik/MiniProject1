@@ -14,8 +14,8 @@ public class Wall {
     public static final List<Position> wall2 = new ArrayList<>();
     public static final List<Position> wall3 = new ArrayList<>();
     public static final List<Position> wall4 = new ArrayList<>();
-    private final List<Position> maze1 = new ArrayList<>();
-    private final List<Position> maze2 = new ArrayList<>();
+    public static final List<Position> maze1 = new ArrayList<>();
+    public static final List<Position> maze2 = new ArrayList<>();
 
     public Wall(int width, int height) {
         this.width = width;
