@@ -93,7 +93,7 @@ public class Main {
         Player player = new Player();
         player.setX(10);
         player.setY(15);
-        player.setSymbol('\u263A');
+        player.setSymbol('\uF04A');
 
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
@@ -102,7 +102,7 @@ public class Main {
     }
 
     public static Monster createMonster(Terminal terminal) throws Exception {
-        Monster monster= new Monster(5, 5, 'X');
+        Monster monster= new Monster(5, 5, '¤');
         terminal.setCursorPosition(monster.getMx(), monster.getMy());
         terminal.putCharacter(monster.getMonsterSymbol());
 
