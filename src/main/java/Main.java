@@ -43,11 +43,11 @@ public class Main {
                 index++;
                 if (index % 50 == 0) {
                     if (latestKeyStroke != null) {
-                        movePlayer(latestKeyStroke,player,terminal);
+                        movePlayer(latestKeyStroke, player, terminal);
                     }
-                }
-                   Thread.sleep(5); // might throw InterruptedException
-               keyStroke = terminal.pollInput();
+
+                    //  Thread.sleep(5); // might throw InterruptedException
+                    // keyStroke = terminal.pollInput();
 
 
                     //index++;
@@ -58,6 +58,7 @@ public class Main {
                             break;
                         }
                     }
+                }
                     Thread.sleep(5); // might throw InterruptedException
                     keyStroke = terminal.pollInput();
 
