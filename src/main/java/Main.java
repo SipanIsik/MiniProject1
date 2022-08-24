@@ -19,8 +19,9 @@ public class Main {
         Terminal terminal= createTerminal();
 
         //WALL
-       Wall wall= new Wall(100, 50);
-       wall.drawMap(terminal);
+        Wall wall= new Wall(100, 50);
+        wall.drawMap(terminal);
+        wall.drawObstacle(terminal);
        //MONSTER
         Monster monster = createMonster(terminal);
         //PLAYER
