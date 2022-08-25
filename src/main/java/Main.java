@@ -1,3 +1,4 @@
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -47,7 +48,8 @@ public class Main {
                         }
                         //POINTS
                         point= getPoint(terminal, player, food);
-                        countPoints= countPoints + point;
+                        countPoints+= point;
+                        pointBox(terminal, countPoints);
 
                         if (1 == point){
                             food = createFood(terminal);
@@ -282,10 +284,22 @@ public class Main {
 
     public static int getPoint(Terminal terminal, Player player, Food food) throws Exception {
         int count=0;
+        TextColor color;
         if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
             terminal.bell();
             count++;
         }
         return count;
+        }
+
+        public static void pointBox (Terminal terminal, int countPoints) throws Exception {
+
+            terminal.setCursorPosition(66, 24);
+            terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+            terminal.setForegroundColor(TextColor.ANSI.BLACK);
+            terminal.putString("POINTS: " + countPoints + " of 5");
+            terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+            terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
+
         }
 }
