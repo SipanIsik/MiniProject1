@@ -4,6 +4,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -23,7 +25,7 @@ public class Main {
         wall.drawObstacle(terminal);
         wall.drawBorder(terminal);
        //MONSTER
-        Monster monster = createMonster(terminal);
+       Monster monster = (Monster) createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
         //FOOD
@@ -185,7 +187,7 @@ public class Main {
         return player;
     }
 
-    public static Monster createMonster(Terminal terminal) throws Exception {
+   /* public static Monster createMonster(Terminal terminal) throws Exception {
         Monster monster= new Monster(5, 5, '¤');
         terminal.setCursorPosition(monster.getMx(), monster.getMy());
         terminal.putCharacter(monster.getMonsterSymbol());
@@ -193,6 +195,7 @@ public class Main {
         return monster;
     }
 
+    */
     public static Food createFood (Terminal terminal) throws Exception {
 
         Food food;
@@ -313,4 +316,122 @@ public class Main {
             terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
         }
+
+
+
+    public static List<Monster> createMonster(Terminal terminal) throws Exception {
+        List<Monster> monsters = new ArrayList<>();
+        terminal.setForegroundColor(TextColor.ANSI.GREEN);
+        monsters.add(new Monster(6, 3,'\u123c'));
+
+        return monsters;
+
+    }
+
+    public static boolean moveMonsters(List<Monster> monster, Player player, Terminal terminal) throws Exception {
+        for (Monster m : monster) {
+            m.setOldMX(m.getMx());
+            m.setOldMY(m.getMy());
+            terminal.setCursorPosition(m.getMx(), m.getMy());
+            terminal.putCharacter(' ');
+
+            if (player.getX() > m.getMx()) {
+                m.setMx(m.getMx() + 1);
+            } else if (player.getX() < m.getMx()) {
+                m.setMx(m.getMx() - 1);
+            }
+            if (player.getY() > m.getMy()) {
+                m.setMy(m.getMy() + 1);
+            } else if (player.getY() < m.getMx()) {
+                m.setMy(m.getMy() - 1);
+            }
+
+        }
+
+        blockMonster(monster,terminal);
+        for (Monster m :monster) {
+
+            terminal.setCursorPosition(m.getOldMX(), m.getOldMY());
+            terminal.putCharacter(' ');
+
+            terminal.setCursorPosition(m.getMx(),m.getMy());
+            terminal.putCharacter(m.getMonsterSymbol('\u123c'));
+
+            terminal.flush();
+
+        }
+
+
+        for (Monster m : monster) {
+            if (m.getMx() == player.getX() && m.getMy() == player.getY()) {
+                terminal.bell();
+
+                return false;
+            }
+
+        }return true;
+
+    }
+    public static void blockMonster(List<Monster> monstersList, Terminal terminal)throws Exception{
+
+        boolean crashIntoObsticle = false;
+
+        for (Position p : Wall.wall1) {
+            for (Monster monster:monstersList) {
+                if (p.x == monster.getMx() && p.y == monster.getMy()) {
+                    monster.setMx(monster.getOldMX());
+                    monster.setMy(monster.getOldMY());
+                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
+                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
+                    terminal.flush();
+                    break;
+                }
+            }
+
+        }
+
+        for (Position p : Wall.wall2){
+            for (Monster monster:monstersList) {
+                if (p.x == monster.getMx() && p.y == monster.getMy()) {
+                    monster.setMx(monster.getOldMX());
+                    monster.setMy(monster.getOldMY());
+                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
+                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
+                    terminal.flush();
+                    break;
+
+                }
+
+            }
+        }
+
+        for (Position p : Wall.wall3) {
+            for (Monster monster:monstersList) {
+                if (p.x == monster.getMx() && p.y == monster.getMy()) {
+                    monster.setMx(monster.getOldMX());
+                    monster.setMy(monster.getOldMY());
+                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
+                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
+                    terminal.flush();
+                    break;
+
+                }
+            }
+        }
+        for (Position p : Wall.wall4) {
+            for (Monster monster:monstersList) {
+                if (p.x == monster.getMx() && p.y == monster.getMy()) {
+                    monster.setMx(monster.getOldMX());
+                    monster.setMy(monster.getOldMY());
+                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
+                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
+                    terminal.flush();
+                    break;
+                }
+            }
+
+        }
+
+
+    }
 }
