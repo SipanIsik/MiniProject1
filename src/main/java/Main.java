@@ -37,7 +37,7 @@ public class Main {
             int index = 0;
             do {
                 index++;
-                if (index % 50 == 0) {
+                if (index % 30 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
                         if (checkGameOver(terminal, player, monster)){
@@ -65,12 +65,15 @@ public class Main {
             //KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
 
-            System.out.println("count points " + countPoints);
+            //System.out.println("count points " + countPoints);
 
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
             }
             terminal.flush();
+
+            //terminal.setCursorPosition(monster.getMx(),monster.getMy());
+            //Character.valueOf('\u2588');
         }
     }
 
@@ -193,14 +196,49 @@ public class Main {
         /*for (int i = 1; i <= numberOfFood; i++) {
             Random placeFoodX = new Random();
             Random placeFoodY = new Random();*/
-        Food food = new Food((random.nextInt(10,70)), (random.nextInt(10,30)));
-        System.out.println("new food x " + food.getfX());
-        System.out.println("new food y " + food.getfY());
+        Food food; //= new Food((random.nextInt(10,70)), (random.nextInt(10,20)));
+        boolean hasAvoidedWalls;
+        do {
+            food = new Food((random.nextInt(10, 70)), (random.nextInt(10, 20)));
+            //System.out.println("new food x " + food.getfX());
+            //System.out.println("new food y " + food.getfY());
 
-        terminal.setCursorPosition(food.getfX(), food.getfY());
-        terminal.putCharacter(food.getfSymbol());
+            terminal.setCursorPosition(food.getfX(), food.getfY());
+            terminal.putCharacter(food.getfSymbol());
 
+            hasAvoidedWalls= foodToAvoidWalls(terminal, food);
+
+            if (!hasAvoidedWalls){
+                //CLEAN old position
+                terminal.setCursorPosition(food.getfX(), food.getfY());
+                terminal.putCharacter('\u2588');
+            }
+
+        } while (!hasAvoidedWalls);
         return food;
+    }
+
+    public static boolean foodToAvoidWalls(Terminal terminal, Food food){
+        boolean hasAvoidedWalls= false;
+        //CHECK MAZE1
+        for (Position p : Wall.maze1) {
+            if(food.getfX() == p.x && food.getfY() ==p.y){
+                hasAvoidedWalls=false;
+                break;
+            } else {
+                hasAvoidedWalls=true;
+            }
+        }
+        //CHECK MAZE2
+        for (Position p : Wall.maze2) {
+            if(food.getfX() == p.x && food.getfY() ==p.y){
+                hasAvoidedWalls=false;
+                break;
+            } else {
+                hasAvoidedWalls=true;
+            }
+        }
+        return hasAvoidedWalls;
     }
 
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
