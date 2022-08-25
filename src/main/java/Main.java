@@ -1,11 +1,8 @@
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -22,7 +19,7 @@ public class Main {
 
         //WALL
         Wall wall= new Wall(100, 50);
-        wall.drawMap(terminal);
+        wall.drawBorder(terminal);
         wall.drawObstacle(terminal);
        //MONSTER
         Monster monster = createMonster(terminal);

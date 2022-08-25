@@ -23,10 +23,10 @@ public class Wall {
 
     }
 
-    public void drawMap(Terminal terminal) throws IOException {
+    public void drawBorder(Terminal terminal) throws IOException {
         for (int i = 1; i < this.width; i++) {
-           //Ritar ut höger- och vänstervägg
             if (i == 1) {
+                //Draws left and right borders.
                 for (int j = 0; j < this.height; j++) {
                     wall2.add(new Position(i, j));
                     terminal.setCursorPosition(wall2.get(j).x, wall2.get(j).y);
@@ -36,8 +36,8 @@ public class Wall {
                     terminal.putCharacter(wallIconSide);
                 }
             } else {
-                //Ritar ut över- och undervägg
-                for (int k = 1; k <= this.width; k++) {
+                //Draws top and bottom borders.
+                for (int k = 1; k < this.width; k++) {
                     wall1.add(new Position(k, 0));
                     terminal.setCursorPosition(wall1.get(k - 1).x, wall1.get(k - 1).y);
                     terminal.putCharacter(wallIconTop);
@@ -48,9 +48,8 @@ public class Wall {
             }
         }
     }
-
     public void drawObstacle(Terminal terminal) throws IOException {
-        //Cellposition i y-led
+        //Cell position on y-axis.
        for (int y = 0; y < 20; y += 5) {
            //Byter ordning på cellerna beroende på om det är jämn eller ojämn rad
            if (y % 2 == 0) {
@@ -62,42 +61,14 @@ public class Wall {
                        //där i och j representerar x-led respektive y-led för placering av block-character
                        for (int i = (3 + x); i < (10 + x); i++) {
                            for (int j = (2 + y); j < (7 + y); j++) {
-                               if ((i == (3 + x) || i == 4 + x) && (j == 2 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 5 + x || i == 6 + x) && (j == 4 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
+                               mazeCell1(i, j, x, y, terminal);
                            }
                        }
                    } else {
                        //Nästlad for-loop som ritar ut en alternativ fördesignad cell
                        for (int i = (3 + x); i < (10 + x); i++) {
                            for (int j = (2 + y); j < (7 + y); j++) {
-                               if ((i == 3 + x || i == 4 + x) && (j == 3 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 5 + x || i == 6 + x) && (j == 2 + y || j == 3 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 7 + x || i == 8 + x) && (j == 5 + y || j == 6 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 9 + x) && (j == 2 + y || j == 5 + y || j == 6 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
+                               mazeCell2(i, j, x, y, terminal);
                            }
                        }
                    }
@@ -108,46 +79,52 @@ public class Wall {
                    if (x % 2 == 0) {
                        for (int i = (3 + x); i < (10 + x); i++) {
                            for (int j = (2 + y); j < (7 + y); j++) {
-                               if ((i == 3 + x || i == 4 + x) && (j == 3 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 5 + x || i == 6 + x) && (j == 2 + y || j == 3 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 7 + x || i == 8 + x) && (j == 5 + y || j == 6 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 9 + x) && (j == 2 + y || j == 5 + y || j == 6 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
+                               mazeCell2(i, j, x, y, terminal);
                            }
                        }
                    } else {
                        for (int i = (3 + x); i < (10 + x); i++) {
                            for (int j = (2 + y); j < (7 + y); j++) {
-                               if ((i == (3 + x) || i == 4 + x) && (j == 2 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
-                               if ((i == 5 + x || i == 6 + x) && (j == 4 + y || j == 5 + y)) {
-                                   maze1.add(new Position(i, j));
-                                   terminal.setCursorPosition(i, j);
-                                   terminal.putCharacter(wallIconSide);
-                               }
+                               mazeCell1(i, j, x, y, terminal);
                            }
                        }
                    }
                }
            }
        }
+    }
+    public void mazeCell1 (int i, int j, int x, int y, Terminal terminal) throws IOException {
+        if ((i == (3 + x) || i == 4 + x) && (j == 2 + y || j == 5 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
+        if ((i == 5 + x || i == 6 + x) && (j == 4 + y || j == 5 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
+    }
+    public void mazeCell2 (int i, int j, int x, int y, Terminal terminal) throws IOException {
+        if ((i == 3 + x || i == 4 + x) && (j == 3 + y || j == 5 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
+        if ((i == 5 + x || i == 6 + x) && (j == 2 + y || j == 3 + y || j == 5 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
+        if ((i == 7 + x || i == 8 + x) && (j == 5 + y || j == 6 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
+        if ((i == 9 + x) && (j == 2 + y || j == 5 + y || j == 6 + y)) {
+            maze1.add(new Position(i, j));
+            terminal.setCursorPosition(i, j);
+            terminal.putCharacter(wallIconSide);
+        }
     }
 }
