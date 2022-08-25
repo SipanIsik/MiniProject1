@@ -1,3 +1,4 @@
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -19,8 +20,8 @@ public class Main {
 
         //WALL
         Wall wall= new Wall(100, 50);
-        wall.drawBorder(terminal);
         wall.drawObstacle(terminal);
+        wall.drawBorder(terminal);
        //MONSTER
         Monster monster = createMonster(terminal);
         //PLAYER
