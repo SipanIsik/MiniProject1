@@ -194,15 +194,11 @@ public class Main {
     }
 
     public static Food createFood (Terminal terminal) throws Exception {
-        /*for (int i = 1; i <= numberOfFood; i++) {
-            Random placeFoodX = new Random();
-            Random placeFoodY = new Random();*/
-        Food food; //= new Food((random.nextInt(10,70)), (random.nextInt(10,20)));
+
+        Food food;
         boolean hasAvoidedWalls;
         do {
-            food = new Food((random.nextInt(10, 70)), (random.nextInt(10, 20)));
-            //System.out.println("new food x " + food.getfX());
-            //System.out.println("new food y " + food.getfY());
+            food = new Food((random.nextInt(10, 70)), (random.nextInt(5, 20)));
 
             terminal.setCursorPosition(food.getfX(), food.getfY());
             terminal.putCharacter(food.getfSymbol());
@@ -211,8 +207,10 @@ public class Main {
 
             if (!hasAvoidedWalls){
                 //CLEAN old position
+                terminal.setBackgroundColor(TextColor.ANSI.CYAN);
                 terminal.setCursorPosition(food.getfX(), food.getfY());
                 terminal.putCharacter('\u2588');
+                terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
             }
 
         } while (!hasAvoidedWalls);
