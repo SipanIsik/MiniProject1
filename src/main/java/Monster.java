@@ -7,11 +7,16 @@ public class Monster {
     private int oldMX;
     private int oldMY;
 
-    public Monster(int mx, int my) {
+
+    public Monster(int mx, int my, char monsterSymbol) {
         Mx = mx;
         My = my;
+        MonsterSymbol = monsterSymbol;
     }
 
+    public Monster() {
+
+    }
 
     public int getMx() {
         return Mx;
@@ -21,7 +26,7 @@ public class Monster {
         return My;
     }
 
-    public char getMonsterSymbol() {
+    public char getMonsterSymbol(char c) {
         return MonsterSymbol;
     }
 
@@ -31,6 +36,14 @@ public class Monster {
 
     public int getOldMY() {
         return oldMY;
+    }
+
+    public void setOldMX(int oldMX) {
+        this.oldMX = oldMX;
+    }
+
+    public void setOldMY(int oldMY) {
+        this.oldMY = oldMY;
     }
 
     public void setMx(int mx) {
