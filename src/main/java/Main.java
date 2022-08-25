@@ -20,8 +20,8 @@ public class Main {
 
         //WALL
         Wall wall= new Wall(100, 50);
-        wall.drawBorder(terminal);
         wall.drawObstacle(terminal);
+        wall.drawBorder(terminal);
        //MONSTER
         Monster monster = createMonster(terminal);
         //PLAYER
