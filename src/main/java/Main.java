@@ -245,8 +245,12 @@ public class Main {
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
         terminal.setCursorPosition(20,10);
+        terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+        terminal.setForegroundColor(TextColor.ANSI.BLACK);
         terminal.putString("Exiting the Game!");
         terminal.putCharacter('\u2639');
+        terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
         Thread.sleep(500);
         terminal.close();
@@ -259,8 +263,13 @@ public class Main {
         if(player.getX() == monster.getMx() && player.getY() == monster.getMy()){
             continueReadingInput = true;
             terminal.setCursorPosition(20,10);
+            terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+            terminal.setForegroundColor(TextColor.ANSI.BLACK);
             terminal.putString("GAME OVER!");
             terminal.putCharacter('\u2639');
+            terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+            terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
+
             terminal.flush();
             Thread.sleep(500);
             terminal.close();
@@ -272,8 +281,12 @@ public class Main {
 
         boolean continueReadingInput = false;
         terminal.setCursorPosition(20, 10);
+        terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+        terminal.setForegroundColor(TextColor.ANSI.BLACK);
         terminal.putString("YOU WON!! CONGRATULATIONS!");
         terminal.putCharacter('\uF04A');
+        terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
         Thread.sleep(500);
         terminal.close();
