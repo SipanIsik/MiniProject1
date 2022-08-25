@@ -11,7 +11,7 @@ public class Wall {
     private final char wallIconTop = '\u2584';
     private final int width;
     private final int height;
-    private final TextColor color1 = TextColor.ANSI.GREEN_BRIGHT;
+    private final TextColor color1 = TextColor.ANSI.GREEN;
     private final TextColor color2 = TextColor.ANSI.CYAN;
     public static final List<Position> wall1 = new ArrayList<>();
     public static final List<Position> wall2 = new ArrayList<>();

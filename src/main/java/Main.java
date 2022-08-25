@@ -200,18 +200,13 @@ public class Main {
         boolean hasAvoidedWalls;
         do {
             food = new Food((random.nextInt(10, 70)), (random.nextInt(10, 20)));
-            //System.out.println("new food x " + food.getfX());
-            //System.out.println("new food y " + food.getfY());
-
-            terminal.setCursorPosition(food.getfX(), food.getfY());
-            terminal.putCharacter(food.getfSymbol());
 
             hasAvoidedWalls= foodToAvoidWalls(terminal, food);
 
-            if (!hasAvoidedWalls){
-                //CLEAN old position
+            if (hasAvoidedWalls){
                 terminal.setCursorPosition(food.getfX(), food.getfY());
-                terminal.putCharacter('\u2588');
+                terminal.putCharacter(food.getfSymbol());
+                //CLEAN old position
             }
 
         } while (!hasAvoidedWalls);
