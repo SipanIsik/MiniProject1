@@ -13,6 +13,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
 
+
         //START-deklaration
         boolean continueReadingInput = true;
         KeyStroke keyStroke = null;
@@ -112,8 +113,8 @@ public class Main {
 
     public static Player createPlayer(Terminal terminal) throws Exception {
         Player player = new Player();
-        player.setX(50);
-        player.setY(50);
+        player.setX(15);
+        player.setY(14);
         player.setSymbol('\u263A');
 
         terminal.setCursorPosition(player.getX(), player.getY());
@@ -239,19 +240,6 @@ public class Main {
 
              }
 
-        /*for (Monster monster:monstersList) {
-            if (crashIntoObsticle) {
-                monster.setMx(monster.getOldMX());
-                monster.setMy(monster.getOldMY());
-                terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                terminal.putCharacter(monster.getMonsterSymbol());
-                terminal.flush();
-
-            }
-
-        }
-
-         */
 
     }
 
