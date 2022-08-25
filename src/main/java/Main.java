@@ -1,3 +1,4 @@
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -19,7 +20,7 @@ public class Main {
         Terminal terminal= createTerminal();
 
         //WALL
-        Wall wall= new Wall(100, 50);
+        Wall wall= new Wall(79, 23);
         wall.drawObstacle(terminal);
         wall.drawBorder(terminal);
        //MONSTER
@@ -80,7 +81,9 @@ public class Main {
 
 
     private static Terminal createTerminal() throws IOException {
+        TerminalSize ts = new TerminalSize(100, 40);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
+        terminalFactory.setInitialTerminalSize(ts);
         Terminal terminal = terminalFactory.createTerminal();
         terminal.setCursorVisible(false);
 
@@ -199,7 +202,7 @@ public class Main {
         Food food; //= new Food((random.nextInt(10,70)), (random.nextInt(10,20)));
         boolean hasAvoidedWalls;
         do {
-            food = new Food((random.nextInt(10, 70)), (random.nextInt(10, 20)));
+            food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 23)));
 
             hasAvoidedWalls= foodToAvoidWalls(terminal, food);
 
