@@ -25,7 +25,7 @@ public class Main {
         wall.drawObstacle(terminal);
         wall.drawBorder(terminal);
        //MONSTER
-       Monster monster = (Monster) createMonster(terminal);
+       List <Monster> monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
         //FOOD
@@ -42,7 +42,15 @@ public class Main {
                 if (index % 30 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
-                        if (checkGameOver(terminal, player, monster)){
+                        if (index % 40 == 0) {
+                            continueReadingInput = moveMonsters(monster, player, terminal);
+                            terminal.flush();
+                            if (!continueReadingInput) {
+                                terminal.close();
+                                break;
+                            }
+                        }
+                        if (checkGameOver(terminal, player, monster){
                             continueReadingInput = false;
                         }
                         if(countPoints==5) {

@@ -20,11 +20,7 @@ public class Monster {
         MonsterSymbol = monsterSymbol;
     }
 
-    public Monster() {
-
-    }
-
-    public int getMx() {
+      public int getMx() {
         return Mx;
     }
 
@@ -64,7 +60,7 @@ public class Monster {
         MonsterSymbol = monsterSymbol;
     }
 
-    // flytta över nedan till Main
+    /*// flytta över nedan till Main
     public static void main(String[] args) throws Exception {
 
 
@@ -82,7 +78,7 @@ public class Monster {
         Player player = createPlayer(terminal);
         /* Monster monster= createMonster2(terminal);
 
-         */
+
         List<Monster> monster = createMonster(terminal);
 
 
@@ -129,6 +125,7 @@ public class Monster {
             terminal.flush();
         }
     }
+
     public static List<Monster> createMonster( Terminal terminal) throws Exception {
         List<Monster> monsters = new ArrayList<>();
         terminal.setForegroundColor(TextColor.ANSI.GREEN);
@@ -244,6 +241,7 @@ public class Monster {
 
 
     }
+    */
 
 }
 

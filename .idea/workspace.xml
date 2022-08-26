@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dca9706c-d012-4f3d-b117-58168e9333e6" name="Changes" comment="Uppdatering av Monster crash in to Wall">
+    <list default="true" id="dca9706c-d012-4f3d-b117-58168e9333e6" name="Changes" comment="Inhämtad project med uppdaterad Monster">
       <change afterPath="$PROJECT_DIR$/src/main/java/Food.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Monster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Monster.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Wall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Wall.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,7 +170,13 @@
       <option name="presentableId" value="LOCAL−00013" />
       <updated>1661421493364</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL−00014" summary="Inhämtad project med uppdaterad Monster">
+      <created>1661456865750</created>
+      <option name="number" value="LOCAL−00014" />
+      <option name="presentableId" value="LOCAL−00014" />
+      <updated>1661456865750</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -191,6 +198,7 @@
     <MESSAGE value="Main.moveMonsters. crashintoWall, Monster" />
     <MESSAGE value="Main.moveMonsters. crashintoWall, Monster,update Monster" />
     <MESSAGE value="Uppdatering av Monster crash in to Wall" />
-    <option name="LAST_COMMIT_MESSAGE" value="Uppdatering av Monster crash in to Wall" />
+    <MESSAGE value="Inhämtad project med uppdaterad Monster" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inhämtad project med uppdaterad Monster" />
   </component>
 </project>
