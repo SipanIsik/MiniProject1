@@ -45,6 +45,8 @@ public class Main {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
                         if (index % 40 == 0) {
+                            wall.drawObstacle(terminal);
+                            wall.drawBorder(terminal);
                             continueReadingInput = moveMonsters(monster, player, terminal);
                             terminal.flush();
                             if (!continueReadingInput) {
@@ -108,6 +110,7 @@ public class Main {
         //Calls method to block player from going through the walls.
         blockPlayerWall(player,terminal);
         //Clean old Position
+
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
         //Set colour and print
@@ -128,35 +131,30 @@ public class Main {
                 break;
             }
         }
-
             for (Position o :Wall.wall2) {
                 if (o.x == player.getX() && o.y == player.getY()) {
                     crashIntoObsticle = true;
                     break;
                 }
         }
-
                 for (Position i :Wall.wall3) {
                     if (i.x == player.getX() && i.y == player.getY()) {
                         crashIntoObsticle = true;
                         break;
                     }
         }
-
                     for (Position u :Wall.wall4) {
                         if (u.x == player.getX() && u.y == player.getY()) {
                             crashIntoObsticle = true;
                             break;
                         }
         }
-
                         for (Position y :Wall.maze1) {
                             if (y.x == player.getX() && y.y == player.getY()) {
                                 crashIntoObsticle = true;
                                 break;
                             }
         }
-
                             for (Position t :Wall.maze2) {
                                 if (t.x == player.getX() && t.y == player.getY()) {
                                     crashIntoObsticle = true;
@@ -172,13 +170,11 @@ public class Main {
             terminal.putCharacter(player.getSymbol());
             terminal.flush();
         }
-
     }
-
     public static Player createPlayer(Terminal terminal) throws Exception {
         Player player = new Player();
-        player.setX(10);
-        player.setY(15);
+        player.setX(37);
+        player.setY(12);
         player.setSymbol('\uF04A');
 
         terminal.setForegroundColor(TextColor.Indexed.fromRGB(254,254,29));
@@ -198,7 +194,6 @@ public class Main {
             monsters.add(new Monster(74, 3,'¤'));
             monsters.add(new Monster(74, 19,'¤'));
             monsters.add(new Monster(6, 19,'¤'));
-            monsters.add(new Monster(38, 12,'¤'));
 
             return monsters;
         }
@@ -330,7 +325,6 @@ public class Main {
             m.setOldMY(m.getMy());
             terminal.setCursorPosition(m.getMx(), m.getMy());
             terminal.putCharacter(' ');
-
             int diffX = m.getMx() - player.getX();
             int absDiffX = Math.abs(diffX);
             int diffY = m.getMy() - player.getY();
@@ -362,36 +356,37 @@ public class Main {
                     m.setMy(m.getMy() - 1);
                 }
             }
-
         }
 
-        blockMonster(monster,terminal);
-        for (Monster m :monster) {
+        blockMonster(monster, terminal);
+        for (Monster m : monster) {
+            for (Position wall : Wall.maze1) {
+                if (m.getOldMX() == wall.x && m.getOldMY() == wall.y) {
+                    terminal.setCursorPosition(m.getOldMX(),m.getOldMY());
+                    terminal.putCharacter('\u2588');
+                }else {
+                    terminal.setCursorPosition(m.getOldMX(), m.getOldMY());
+                    terminal.putCharacter(' ');
+                }
 
-            terminal.setCursorPosition(m.getOldMX(), m.getOldMY());
-            terminal.putCharacter(' ');
+            }
 
-            terminal.setCursorPosition(m.getMx(),m.getMy());
+            terminal.setCursorPosition(m.getMx(), m.getMy());
             terminal.putCharacter(m.getMonsterSymbol('\u123c'));
-
             terminal.flush();
-
         }
 
 
         for (Monster m : monster) {
             if (m.getMx() == player.getX() && m.getMy() == player.getY()) {
                 terminal.bell();
-
                 return false;
             }
 
-        }return true;
-
+        }
+        return true;
     }
-    public static void blockMonster(List<Monster> monstersList, Terminal terminal)throws Exception {
-
-        boolean crashIntoObsticle = false;
+    public static void blockMonster(List<Monster> monstersList, Terminal terminal) throws Exception {
 
         for (Position p : Wall.wall1) {
             for (Monster monster : monstersList) {
@@ -415,7 +410,6 @@ public class Main {
                     terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
                     terminal.flush();
                     break;
-
                 }
 
             }
@@ -430,7 +424,6 @@ public class Main {
                     terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
                     terminal.flush();
                     break;
-
                 }
             }
         }
@@ -447,29 +440,19 @@ public class Main {
             }
 
         }
-        for (Position p : Wall.maze1) {
+
+
+       /* for (Position p : Wall.maze1) {
             for (Monster monster : monstersList) {
                 if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
                     terminal.setCursorPosition(monster.getMx(), monster.getMy());
+                    terminal.setBackgroundColor(TextColor.ANSI.CYAN);
                     terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
+                    terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
                     terminal.flush();
                     break;
                 }
             }
-        }
-        for (Position p : Wall.maze2) {
-            for (Monster monster : monstersList) {
-                if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
-                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
-                    terminal.flush();
-                    break;
-                }
-            }
-        }
+        }*/
     }
 }
