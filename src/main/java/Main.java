@@ -33,6 +33,7 @@ public class Main {
         Food food = createFood(terminal);
         int countPoints=0;
         int point;
+        int mPoint= 0;
 
         terminal.flush();
 
@@ -59,9 +60,13 @@ public class Main {
                         }
                         //POINTS
                         point= getPoint(terminal, player, food);
+                        mPoint=getPointM(terminal, monster, food);
                         countPoints+= point;
                         pointBox(terminal, countPoints);
                         if (1 == point){
+                            food = createFood(terminal);
+                        }
+                        if (1==mPoint){
                             food = createFood(terminal);
                         }
                     }
@@ -201,6 +206,12 @@ public class Main {
             List<Monster> monsters = new ArrayList<>();
             terminal.setForegroundColor(TextColor.ANSI.GREEN);
             monsters.add(new Monster(6, 3,'\u123c'));
+            monsters.add(new Monster(74, 3,'\u123c'));
+            monsters.add(new Monster(74, 19,'\u123c'));
+            monsters.add(new Monster(6, 19,'\u123c'));
+            monsters.add(new Monster(38, 12,'\u123c'));
+
+
             return monsters;
 
         }
@@ -212,8 +223,7 @@ public class Main {
         Food food;
         boolean hasAvoidedWalls;
         do {
-            food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 23)));
-
+            food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 22)));
             //terminal.setCursorPosition(food.getfX(), food.getfY());
             //terminal.putCharacter(food.getfSymbol());
 
@@ -241,17 +251,18 @@ public class Main {
                 break;
             } else {
                 hasAvoidedWalls=true;
+                /*CHECK MAZE2
+                for (Position w : Wall.maze2) {
+                    if(food.getfX() == w.x && food.getfY() ==w.y){
+                        hasAvoidedWalls=false;
+                        break;
+                    } else {
+                        hasAvoidedWalls=true;
+                    }
+                }*/
             }
         }
-        //CHECK MAZE2
-        for (Position p : Wall.maze2) {
-            if(food.getfX() == p.x && food.getfY() ==p.y){
-                hasAvoidedWalls=false;
-                break;
-            } else {
-                hasAvoidedWalls=true;
-            }
-        }
+
         return hasAvoidedWalls;
     }
 
@@ -320,6 +331,18 @@ public class Main {
         return count;
         }
 
+    public static int getPointM(Terminal terminal, List <Monster> monsters, Food food) throws Exception {
+        int count=0;
+        TextColor color;
+        for (Monster m: monsters) {
+            if(m.getMx() == food.getfX() && m.getMy() == food.getfY()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
         public static void pointBox (Terminal terminal, int countPoints) throws Exception {
 
             terminal.setCursorPosition(66, 24);
@@ -338,15 +361,36 @@ public class Main {
             terminal.setCursorPosition(m.getMx(), m.getMy());
             terminal.putCharacter(' ');
 
-            if (player.getX() > m.getMx()) {
-                m.setMx(m.getMx() + 1);
-            } else if (player.getX() < m.getMx()) {
-                m.setMx(m.getMx() - 1);
-            }
-            if (player.getY() > m.getMy()) {
-                m.setMy(m.getMy() + 1);
-            } else if (player.getY() < m.getMx()) {
-                m.setMy(m.getMy() - 1);
+            int diffX = m.getMx() - player.getX();
+            int absDiffX = Math.abs(diffX);
+            int diffY = m.getMy() - player.getY();
+            int absDiffY = Math.abs(diffY);
+            if (absDiffX > absDiffY) {
+                // Move horizontal! <--->
+                if (diffX < 0) {
+                    m.setMx(m.getMx() + 1);
+                } else {
+                    m.setMx(m.getMx() - 1);
+                }
+            } else if (absDiffX < absDiffY) {
+                // Move vertical! v / ^
+                if (diffY < 0) {
+                    m.setMy(m.getMy() + 1);
+                } else {
+                    m.setMy(m.getMy() - 1);
+                }
+            } else {
+                // Move diagonal! / or \
+                if (diffX < 0) {
+                    m.setMx(m.getMx() + 1);
+                } else {
+                    m.setMx(m.getMx() - 1);
+                }
+                if (diffY < 0) {
+                    m.setMy(m.getMy() - 1);
+                } else {
+                    m.setMy(m.getMy() - 1);
+                }
             }
 
         }
@@ -390,7 +434,6 @@ public class Main {
                     break;
                 }
             }
-
         }
 
         for (Position p : Wall.wall2) {

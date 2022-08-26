@@ -130,22 +130,22 @@ public class Wall {
         //where i- and j-variables represent the coordinates on the x- and y-axis respectively,
         //and the x- and y-variables are the mazeCell offsets in the cell-grid.
         if ((i == 3 + x || i == 4 + x) && (j == 3 + y || j == 5 + y)) {
-            maze2.add(new Position(i, j));
+            maze1.add(new Position(i, j));
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
         }
         if ((i == 5 + x || i == 6 + x) && (j == 2 + y || j == 3 + y || j == 5 + y)) {
-            maze2.add(new Position(i, j));
+            maze1.add(new Position(i, j));
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
         }
         if ((i == 7 + x || i == 8 + x) && (j == 5 + y || j == 6 + y)) {
-            maze2.add(new Position(i, j));
+            maze1.add(new Position(i, j));
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
         }
         if ((i == 9 + x) && (j == 5 + y || j == 6 + y)) {
-            maze2.add(new Position(i, j));
+            maze1.add(new Position(i, j));
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
         }
