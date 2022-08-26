@@ -5,6 +5,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -15,7 +17,7 @@ public class Main {
 
         //START-deklaration
         boolean continueReadingInput= true;
-        KeyStroke keyStroke;
+        KeyStroke keyStroke =null;
         KeyStroke latestKeyStroke= null;
         Terminal terminal= createTerminal();
 
@@ -24,7 +26,7 @@ public class Main {
         wall.drawObstacle(terminal);
         wall.drawBorder(terminal);
        //MONSTER
-        Monster monster = createMonster(terminal);
+       List <Monster> monster = createMonster(terminal);
         //PLAYER
         Player player = createPlayer(terminal);
         //FOOD
@@ -41,6 +43,14 @@ public class Main {
                 if (index % 30 == 0) {
                     if (latestKeyStroke != null) {
                         movePlayer(latestKeyStroke,player,terminal);
+                        if (index % 40 == 0) {
+                            continueReadingInput = moveMonsters(monster, player, terminal);
+                            terminal.flush();
+                            if (!continueReadingInput) {
+                                terminal.close();
+                                break;
+                            }
+                        }
                         if (checkGameOver(terminal, player, monster)){
                             continueReadingInput = false;
                         }
@@ -49,7 +59,8 @@ public class Main {
                         }
                         //POINTS
                         point= getPoint(terminal, player, food);
-                        countPoints= countPoints + point;
+                        countPoints+= point;
+                        pointBox(terminal, countPoints);
 
                         if (1 == point){
                             food = createFood(terminal);
@@ -196,20 +207,23 @@ public class Main {
     }
 
     public static Food createFood (Terminal terminal) throws Exception {
-        /*for (int i = 1; i <= numberOfFood; i++) {
-            Random placeFoodX = new Random();
-            Random placeFoodY = new Random();*/
-        Food food; //= new Food((random.nextInt(10,70)), (random.nextInt(10,20)));
+
+        Food food;
         boolean hasAvoidedWalls;
         do {
             food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 23)));
 
+            terminal.setCursorPosition(food.getfX(), food.getfY());
+            terminal.putCharacter(food.getfSymbol());
+
             hasAvoidedWalls= foodToAvoidWalls(terminal, food);
 
-            if (hasAvoidedWalls){
-                terminal.setCursorPosition(food.getfX(), food.getfY());
-                terminal.putCharacter(food.getfSymbol());
+            if (!hasAvoidedWalls){
                 //CLEAN old position
+                terminal.setBackgroundColor(TextColor.ANSI.CYAN);
+                terminal.setCursorPosition(food.getfX(), food.getfY());
+                terminal.putCharacter('\u2588');
+                terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
             }
 
         } while (!hasAvoidedWalls);
@@ -242,8 +256,12 @@ public class Main {
     private static boolean checkRequestToQuit(Terminal terminal) throws Exception {
         boolean continueReadingInput =false;
         terminal.setCursorPosition(20,10);
+        terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+        terminal.setForegroundColor(TextColor.ANSI.BLACK);
         terminal.putString("Exiting the Game!");
         terminal.putCharacter('\u2639');
+        terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
         Thread.sleep(500);
         terminal.close();
@@ -251,16 +269,23 @@ public class Main {
         return continueReadingInput;
     }
 
-    private static boolean checkGameOver(Terminal terminal, Player player, Monster monster) throws Exception {
+    private static boolean checkGameOver(Terminal terminal, Player player, List<Monster> monster) throws Exception {
         boolean continueReadingInput = false;
-        if(player.getX() == monster.getMx() && player.getY() == monster.getMy()){
-            continueReadingInput = true;
-            terminal.setCursorPosition(20,10);
-            terminal.putString("GAME OVER!");
-            terminal.putCharacter('\u2639');
-            terminal.flush();
-            Thread.sleep(500);
-            terminal.close();
+        for (Monster monster1 : monster) {
+            if (player.getX() == monster1.getMx() && player.getY() == monster1.getMy()) {
+                continueReadingInput = true;
+                terminal.setCursorPosition(20, 10);
+                terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+                terminal.setForegroundColor(TextColor.ANSI.BLACK);
+                terminal.putString("GAME OVER!");
+                terminal.putCharacter('\u2639');
+                terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+                terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
+
+                terminal.flush();
+                Thread.sleep(500);
+                terminal.close();
+            }
         }
         return continueReadingInput;
     }
@@ -269,8 +294,12 @@ public class Main {
 
         boolean continueReadingInput = false;
         terminal.setCursorPosition(20, 10);
+        terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+        terminal.setForegroundColor(TextColor.ANSI.BLACK);
         terminal.putString("YOU WON!! CONGRATULATIONS!");
         terminal.putCharacter('\uF04A');
+        terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
         Thread.sleep(500);
         terminal.close();
@@ -281,10 +310,22 @@ public class Main {
 
     public static int getPoint(Terminal terminal, Player player, Food food) throws Exception {
         int count=0;
+        TextColor color;
         if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
             terminal.bell();
             count++;
         }
         return count;
+        }
+
+        public static void pointBox (Terminal terminal, int countPoints) throws Exception {
+
+            terminal.setCursorPosition(66, 24);
+            terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+            terminal.setForegroundColor(TextColor.ANSI.BLACK);
+            terminal.putString("POINTS: " + countPoints + " of 5");
+            terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+            terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
+
         }
 }
