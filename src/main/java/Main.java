@@ -33,7 +33,7 @@ public class Main {
         Food food = createFood(terminal);
         int countPoints=0;
         int point;
-        int mPoint= 0;
+        int mPoint;
 
         terminal.flush();
 
@@ -55,12 +55,13 @@ public class Main {
                         if (checkGameOver(terminal, player, monster)){
                             continueReadingInput = false;
                         }
+
                         if(countPoints==5) {
                             continueReadingInput = playerWon(terminal);
                         }
                         //POINTS
                         point= getPoint(terminal, player, food);
-                        mPoint=getPointM(terminal, monster, food);
+                        mPoint=getPointM(monster, food);
                         countPoints+= point;
                         pointBox(terminal, countPoints);
                         if (1 == point){
@@ -80,19 +81,12 @@ public class Main {
             //KeyType type=keyStroke.getKeyType();
             Character c=keyStroke.getCharacter();
 
-            //System.out.println("count points " + countPoints);
-
             if(c==Character.valueOf('q')) {
                 continueReadingInput= checkRequestToQuit(terminal);
             }
             terminal.flush();
-
-            //terminal.setCursorPosition(monster.getMx(),monster.getMy());
-            //Character.valueOf('\u2588');
         }
     }
-
-
 
     private static Terminal createTerminal() throws IOException {
         TerminalSize ts = new TerminalSize(100, 40);
@@ -105,32 +99,24 @@ public class Main {
     }
 
     public static void movePlayer(KeyStroke type , Player player, Terminal terminal) throws Exception{
-        switch (type.getKeyType()){
-            case ArrowUp:
-                player.moveUp();
-                break;
-            case ArrowDown:
-                player.moveDown();
-                break;
-            case ArrowLeft:
-                player.moveLeft();
-                break;
-            case ArrowRight:
-                player.moveRight();
-                break;
-
+        switch (type.getKeyType()) {
+            case ArrowUp -> player.moveUp();
+            case ArrowDown -> player.moveDown();
+            case ArrowLeft -> player.moveLeft();
+            case ArrowRight -> player.moveRight();
         }
         //Calls method to block player from going through the walls.
         blockPlayerWall(player,terminal);
-        //Clean old position
+        //Clean old Position
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
-
+        //Set colour and print
+        terminal.setForegroundColor(TextColor.Indexed.fromRGB(254,254,29));
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
         terminal.flush();
-
     }
 
     public static void blockPlayerWall(Player player, Terminal terminal) throws Exception{
@@ -195,8 +181,11 @@ public class Main {
         player.setY(15);
         player.setSymbol('\uF04A');
 
+        terminal.setForegroundColor(TextColor.Indexed.fromRGB(254,254,29));
+
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
+        terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
         return player;
     }
@@ -205,18 +194,14 @@ public class Main {
         public static List<Monster> createMonster(Terminal terminal) throws Exception {
             List<Monster> monsters = new ArrayList<>();
             terminal.setForegroundColor(TextColor.ANSI.GREEN);
-            monsters.add(new Monster(6, 3,'\u123c'));
-            monsters.add(new Monster(74, 3,'\u123c'));
-            monsters.add(new Monster(74, 19,'\u123c'));
-            monsters.add(new Monster(6, 19,'\u123c'));
-            monsters.add(new Monster(38, 12,'\u123c'));
-
+            monsters.add(new Monster(6, 3,'¤'));
+            monsters.add(new Monster(74, 3,'¤'));
+            monsters.add(new Monster(74, 19,'¤'));
+            monsters.add(new Monster(6, 19,'¤'));
+            monsters.add(new Monster(38, 12,'¤'));
 
             return monsters;
-
         }
-
-
 
     public static Food createFood (Terminal terminal) throws Exception {
 
@@ -224,10 +209,8 @@ public class Main {
         boolean hasAvoidedWalls;
         do {
             food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 22)));
-            //terminal.setCursorPosition(food.getfX(), food.getfY());
-            //terminal.putCharacter(food.getfSymbol());
 
-            hasAvoidedWalls= foodToAvoidWalls(terminal, food);
+            hasAvoidedWalls= foodToAvoidWalls(food);
 
             if (hasAvoidedWalls){
                 //CLEAN old position
@@ -237,12 +220,11 @@ public class Main {
                 terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
                 terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
             }
-
         } while (!hasAvoidedWalls);
         return food;
     }
 
-    public static boolean foodToAvoidWalls(Terminal terminal, Food food){
+    public static boolean foodToAvoidWalls(Food food){
         boolean hasAvoidedWalls= false;
         //CHECK MAZE1
         for (Position p : Wall.maze1) {
@@ -251,18 +233,8 @@ public class Main {
                 break;
             } else {
                 hasAvoidedWalls=true;
-                /*CHECK MAZE2
-                for (Position w : Wall.maze2) {
-                    if(food.getfX() == w.x && food.getfY() ==w.y){
-                        hasAvoidedWalls=false;
-                        break;
-                    } else {
-                        hasAvoidedWalls=true;
-                    }
-                }*/
             }
         }
-
         return hasAvoidedWalls;
     }
 
@@ -271,8 +243,7 @@ public class Main {
         terminal.setCursorPosition(20,10);
         terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
         terminal.setForegroundColor(TextColor.ANSI.BLACK);
-        terminal.putString("Exiting the Game!");
-        terminal.putCharacter('\u2639');
+        terminal.putString("Exiting the Game!" + '\u2639');
         terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
         terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
@@ -290,14 +261,14 @@ public class Main {
                 terminal.setCursorPosition(20, 10);
                 terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
                 terminal.setForegroundColor(TextColor.ANSI.BLACK);
-                terminal.putString("GAME OVER!");
-                terminal.putCharacter('\u2639');
+                terminal.putString("GAME OVER!!! " + '\u2639');
                 terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
                 terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
+                Thread.sleep(700);
                 terminal.flush();
-                Thread.sleep(500);
-                terminal.close();
+
+                break;
             }
         }
         return continueReadingInput;
@@ -309,8 +280,7 @@ public class Main {
         terminal.setCursorPosition(20, 10);
         terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
         terminal.setForegroundColor(TextColor.ANSI.BLACK);
-        terminal.putString("YOU WON!! CONGRATULATIONS!");
-        terminal.putCharacter('\uF04A');
+        terminal.putString("YOU WON!! CONGRATULATIONS!" + '\uF04A');
         terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
         terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
         terminal.flush();
@@ -323,7 +293,7 @@ public class Main {
 
     public static int getPoint(Terminal terminal, Player player, Food food) throws Exception {
         int count=0;
-        TextColor color;
+
         if(player.getX() == food.getfX() && player.getY() == food.getfY()) {
             terminal.bell();
             count++;
@@ -331,9 +301,9 @@ public class Main {
         return count;
         }
 
-    public static int getPointM(Terminal terminal, List <Monster> monsters, Food food) throws Exception {
+    public static int getPointM(List <Monster> monsters, Food food) {
         int count=0;
-        TextColor color;
+
         for (Monster m: monsters) {
             if(m.getMx() == food.getfX() && m.getMy() == food.getfY()) {
                 count++;
