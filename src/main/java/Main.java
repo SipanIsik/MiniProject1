@@ -1,3 +1,4 @@
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -21,7 +22,7 @@ public class Main {
         Terminal terminal= createTerminal();
 
         //WALL
-        Wall wall= new Wall(100, 50);
+        Wall wall= new Wall(79, 23);
         wall.drawObstacle(terminal);
         wall.drawBorder(terminal);
        //MONSTER
@@ -91,7 +92,9 @@ public class Main {
 
 
     private static Terminal createTerminal() throws IOException {
+        TerminalSize ts = new TerminalSize(100, 40);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
+        terminalFactory.setInitialTerminalSize(ts);
         Terminal terminal = terminalFactory.createTerminal();
         terminal.setCursorVisible(false);
 
@@ -195,7 +198,7 @@ public class Main {
         return player;
     }
 
-   /* public static Monster createMonster(Terminal terminal) throws Exception {
+    public static Monster createMonster(Terminal terminal) throws Exception {
         Monster monster= new Monster(5, 5, '¤');
         terminal.setCursorPosition(monster.getMx(), monster.getMy());
         terminal.putCharacter(monster.getMonsterSymbol());
@@ -203,13 +206,12 @@ public class Main {
         return monster;
     }
 
-    */
     public static Food createFood (Terminal terminal) throws Exception {
 
         Food food;
         boolean hasAvoidedWalls;
         do {
-            food = new Food((random.nextInt(10, 70)), (random.nextInt(5, 20)));
+            food = new Food((random.nextInt(2, 78)), (random.nextInt(1, 23)));
 
             terminal.setCursorPosition(food.getfX(), food.getfY());
             terminal.putCharacter(food.getfSymbol());
@@ -326,122 +328,4 @@ public class Main {
             terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
         }
-
-
-
-    public static List<Monster> createMonster(Terminal terminal) throws Exception {
-        List<Monster> monsters = new ArrayList<>();
-        terminal.setForegroundColor(TextColor.ANSI.GREEN);
-        monsters.add(new Monster(6, 3,'\u123c'));
-
-        return monsters;
-
-    }
-
-    public static boolean moveMonsters(List<Monster> monster, Player player, Terminal terminal) throws Exception {
-        for (Monster m : monster) {
-            m.setOldMX(m.getMx());
-            m.setOldMY(m.getMy());
-            terminal.setCursorPosition(m.getMx(), m.getMy());
-            terminal.putCharacter(' ');
-
-            if (player.getX() > m.getMx()) {
-                m.setMx(m.getMx() + 1);
-            } else if (player.getX() < m.getMx()) {
-                m.setMx(m.getMx() - 1);
-            }
-            if (player.getY() > m.getMy()) {
-                m.setMy(m.getMy() + 1);
-            } else if (player.getY() < m.getMx()) {
-                m.setMy(m.getMy() - 1);
-            }
-
-        }
-
-        blockMonster(monster,terminal);
-        for (Monster m :monster) {
-
-            terminal.setCursorPosition(m.getOldMX(), m.getOldMY());
-            terminal.putCharacter(' ');
-
-            terminal.setCursorPosition(m.getMx(),m.getMy());
-            terminal.putCharacter(m.getMonsterSymbol('\u123c'));
-
-            terminal.flush();
-
-        }
-
-
-        for (Monster m : monster) {
-            if (m.getMx() == player.getX() && m.getMy() == player.getY()) {
-                terminal.bell();
-
-                return false;
-            }
-
-        }return true;
-
-    }
-    public static void blockMonster(List<Monster> monstersList, Terminal terminal)throws Exception{
-
-        boolean crashIntoObsticle = false;
-
-        for (Position p : Wall.wall1) {
-            for (Monster monster:monstersList) {
-                if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
-                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
-                    terminal.flush();
-                    break;
-                }
-            }
-
-        }
-
-        for (Position p : Wall.wall2){
-            for (Monster monster:monstersList) {
-                if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
-                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
-                    terminal.flush();
-                    break;
-
-                }
-
-            }
-        }
-
-        for (Position p : Wall.wall3) {
-            for (Monster monster:monstersList) {
-                if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
-                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
-                    terminal.flush();
-                    break;
-
-                }
-            }
-        }
-        for (Position p : Wall.wall4) {
-            for (Monster monster:monstersList) {
-                if (p.x == monster.getMx() && p.y == monster.getMy()) {
-                    monster.setMx(monster.getOldMX());
-                    monster.setMy(monster.getOldMY());
-                    terminal.setCursorPosition(monster.getMx(), monster.getMy());
-                    terminal.putCharacter(monster.getMonsterSymbol('\u123c'));
-                    terminal.flush();
-                    break;
-                }
-            }
-
-        }
-
-
-    }
 }

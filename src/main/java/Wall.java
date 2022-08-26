@@ -11,7 +11,7 @@ public class Wall {
     private final char wallIconTop = '\u2584';
     private final int width;
     private final int height;
-    private final TextColor color1 = TextColor.ANSI.GREEN_BRIGHT;
+    private final TextColor color1 = TextColor.ANSI.GREEN;
     private final TextColor color2 = TextColor.ANSI.CYAN;
     public static final List<Position> wall1 = new ArrayList<>();
     public static final List<Position> wall2 = new ArrayList<>();
@@ -43,7 +43,7 @@ public class Wall {
                 }
             } else {
                 //Draws top and bottom borders.
-                for (int k = 1; k < this.width; k++) {
+                for (int k = 1; k <= this.width; k++) {
                     wall1.add(new Position(k, 0));
                     terminal.setCursorPosition(wall1.get(k - 1).x, wall1.get(k - 1).y);
                     terminal.putCharacter(wallIconTop);
@@ -144,7 +144,7 @@ public class Wall {
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
         }
-        if ((i == 9 + x) && (j == 2 + y || j == 5 + y || j == 6 + y)) {
+        if ((i == 9 + x) && (j == 5 + y || j == 6 + y)) {
             maze2.add(new Position(i, j));
             terminal.setCursorPosition(i, j);
             terminal.putCharacter(wallIconSide);
