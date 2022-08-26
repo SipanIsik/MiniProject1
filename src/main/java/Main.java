@@ -16,7 +16,7 @@ public class Main {
 
         //START-deklaration
         boolean continueReadingInput= true;
-        KeyStroke keyStroke;
+        KeyStroke keyStroke =null;
         KeyStroke latestKeyStroke= null;
         Terminal terminal= createTerminal();
 
@@ -50,7 +50,7 @@ public class Main {
                                 break;
                             }
                         }
-                        if (checkGameOver(terminal, player, monster){
+                        if (checkGameOver(terminal, player, monster)){
                             continueReadingInput = false;
                         }
                         if(countPoints==5) {
@@ -267,21 +267,23 @@ public class Main {
         return continueReadingInput;
     }
 
-    private static boolean checkGameOver(Terminal terminal, Player player, Monster monster) throws Exception {
+    private static boolean checkGameOver(Terminal terminal, Player player, List<Monster> monster) throws Exception {
         boolean continueReadingInput = false;
-        if(player.getX() == monster.getMx() && player.getY() == monster.getMy()){
-            continueReadingInput = true;
-            terminal.setCursorPosition(20,10);
-            terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
-            terminal.setForegroundColor(TextColor.ANSI.BLACK);
-            terminal.putString("GAME OVER!");
-            terminal.putCharacter('\u2639');
-            terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
-            terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
+        for (Monster monster1 : monster) {
+            if (player.getX() == monster1.getMx() && player.getY() == monster1.getMy()) {
+                continueReadingInput = true;
+                terminal.setCursorPosition(20, 10);
+                terminal.setBackgroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+                terminal.setForegroundColor(TextColor.ANSI.BLACK);
+                terminal.putString("GAME OVER!");
+                terminal.putCharacter('\u2639');
+                terminal.setBackgroundColor(TextColor.ANSI.DEFAULT);
+                terminal.setForegroundColor(TextColor.ANSI.DEFAULT);
 
-            terminal.flush();
-            Thread.sleep(500);
-            terminal.close();
+                terminal.flush();
+                Thread.sleep(500);
+                terminal.close();
+            }
         }
         return continueReadingInput;
     }
